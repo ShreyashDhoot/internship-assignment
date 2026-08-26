@@ -1,10 +1,8 @@
 import os
 import json
 import re
-import sqlite3
 from pathlib import Path
 import docx
-
 
 def parse_docx_content(file_path, folder_artist_id, folder_artist_name, category_name):
     doc = docx.Document(file_path)
@@ -51,10 +49,8 @@ def parse_docx_content(file_path, folder_artist_id, folder_artist_name, category
     current_section = None
 
     for i, line in enumerate(lines):
-        # Clean the line for section checking (strips colons like "Bio:" -> "bio")
         line_clean = line.strip().lower().rstrip(":")
 
-        # --- STEP 1: Check section headers BEFORE splitting colons ---
         if line_clean == "bio":
             current_section = "bio"
             continue
@@ -62,7 +58,6 @@ def parse_docx_content(file_path, folder_artist_id, folder_artist_name, category
             current_section = "portfolio"
             continue
 
-        # --- STEP 2: Handle Inline Key-Value Pairs ---
         if ":" in line or "Preference-" in line:
             parts = re.split(r'[:\-]', line, maxsplit=1)
             key = parts[0].strip().lower()
@@ -81,7 +76,6 @@ def parse_docx_content(file_path, folder_artist_id, folder_artist_name, category
                 current_section = None
                 continue
 
-        # --- STEP 3: Handle Multiline Headers (Key on line i, Value on line i+1) ---
         if line_clean == "category" and i + 1 < len(lines):
             profile["category"] = lines[i+1].strip()
         elif line_clean == "location" and i + 1 < len(lines):
@@ -90,59 +84,25 @@ def parse_docx_content(file_path, folder_artist_id, folder_artist_name, category
             if i + 1 < len(lines) and not profile["work_preference"]:
                 profile["work_preference"] = lines[i+1].strip()
 
-        # --- STEP 4: Accumulate multiline content (Bio or Portfolio) ---
         if current_section == "bio":
             profile["bio"] = f"{profile['bio']} {line}".strip() if profile["bio"] else line
         elif current_section == "portfolio":
             profile["portfolio"].append(line)
 
     return profile
-    
-def setup_sqlite_db(db_path="artists.db"):
-    """Creates a local SQLite database for native JSON queries."""
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS artist_documents (
-            artist_id TEXT PRIMARY KEY,
-            data TEXT CHECK(json_valid(data))
-        )
-    ''')
-    conn.commit()
-    return conn
 
 
-def save_record(conn, artist_dir, profile):
-    """Saves both a local profile.json and inserts the JSON string into SQLite."""
-    # 1. Save JSON file inside artist directory
-    json_path = artist_dir / "profile.json"
-    with open(json_path, 'w', encoding='utf-8') as f:
-        json.dump(profile, f, indent=4)
-        
-    # 2. Insert into SQLite table
-    cursor = conn.cursor()
-    cursor.execute('''
-        INSERT OR REPLACE INTO artist_documents (artist_id, data)
-        VALUES (?, ?)
-    ''', (profile["artist_id"], json.dumps(profile)))
-    conn.commit()
-
-
-# MAIN EXECUTION BLOCK
 if __name__ == "__main__":
     dataset_path = Path(r"D:\INTERNSHIP-assigment\Data-set\artist_profiles")
-    db_conn = setup_sqlite_db("artists.db")
     
     # Process all directories recursively
     for docx_file in dataset_path.rglob("*.docx"):
-        # Skip temporary Office files
         if docx_file.name.startswith("~$"):
             continue
             
         artist_dir = docx_file.parent
         category_dir = artist_dir.parent
         
-        # Derive initial metadata from folder structure
         category_name = category_dir.name
         folder_name = artist_dir.name
         
@@ -153,9 +113,11 @@ if __name__ == "__main__":
         # Run extraction
         profile = parse_docx_content(docx_file, folder_artist_id, folder_artist_name, category_name)
         
-        # Save output to disk & database
-        save_record(db_conn, artist_dir, profile)
-        print(f"Processed: {profile['artist_id']} - {profile['name']}")
+        # Save JSON file inside artist directory
+        json_path = artist_dir / "profile.json"
+        with open(json_path, 'w', encoding='utf-8') as f:
+            json.dump(profile, f, indent=4)
+            
+        print(f"Created JSON: {profile['artist_id']} - {profile['name']}")
 
-    db_conn.close()
-    print("\nExtraction complete. Saved all records to JSON files and artists.db.")
+    print("\nExtraction complete. All profile.json files generated.")
