@@ -122,16 +122,17 @@ if __name__ == "__main__":
     # --- DYNAMIC RELATIVE PATH RESOLUTION ---
     # Locates the script's directory (.../internship-assignment/processing_dataset)
     SCRIPT_DIR = Path(__file__).resolve().parent
-    
+
     # Resolves the repository root (.../internship-assignment)
     REPO_ROOT = SCRIPT_DIR.parent
-    
-    # Path to artist profiles relative to repo root
-    dataset_path = REPO_ROOT / "Data-set" / "artist_profiles"
-    
-    # Fallback check if script is executed from repo root directly
+
+    # New flat output location from docx-to-json.py: one JSON file per
+    # artist, named after the artist's folder (e.g. M01_Meera_Arjun.json),
+    # living directly in artist_profiles/ -- not nested under
+    # Data-set/artist_profiles/<category>/<artist>/profile.json anymore.
+    dataset_path = REPO_ROOT / "artist_profiles"
     if not dataset_path.exists():
-        dataset_path = SCRIPT_DIR / "Data-set" / "artist_profiles"
+        dataset_path = SCRIPT_DIR / "artist_profiles"
 
     if not dataset_path.exists():
         print(f"[ERROR] Could not locate dataset at: {dataset_path}")
@@ -139,22 +140,32 @@ if __name__ == "__main__":
 
     print(f"Target dataset directory: {dataset_path}\n")
 
-    json_files = list(dataset_path.rglob("profile.json"))
-    
+    FIRST_LETTER_TO_CATEGORY = {
+        "M": "musicians",
+        "P": "photographers",
+        "V": "video_editors",
+    }
+
+    json_files = sorted(dataset_path.glob("*.json"))
+
     if not json_files:
-        print("No profile.json files found.")
+        print("No JSON files found.")
     else:
         for json_file in json_files:
-            # Get category dynamically from folder structure
-            # e.g., artist_profiles / video_editors / V01_Nisha / profile.json
-            category_folder = json_file.parent.parent.name 
-            
+            first_letter = json_file.stem[0].upper() if json_file.stem else ""
+            category_folder = FIRST_LETTER_TO_CATEGORY.get(first_letter)
+
+            if category_folder is None:
+                print(f"[WARNING] Skipping {json_file.name}: filename doesn't start with "
+                      f"M/P/V, can't determine category.")
+                continue
+
             # Skip if questions are already added (prevents duplicates on re-runs)
             with open(json_file, 'r', encoding='utf-8') as f:
                 if "multimodal_questions" in json.load(f):
-                    print(f"Skipping {json_file.parent.name} - already updated.")
+                    print(f"Skipping {json_file.name} - already updated.")
                     continue
-                    
+
             process_artist_profile(json_file, category_folder)
-            
+
         print("\nSuccessfully injected questions into all profiles.")

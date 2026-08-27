@@ -29,7 +29,8 @@ def parse_docx_content(file_path, folder_artist_id, folder_artist_name, category
     profile = {
         "artist_id": folder_artist_id,
         "name": folder_artist_name,
-        "category": category_name,
+        "category": category_name,          # folder-based, GROUND TRUTH for filtering -- never overwritten below
+        "docx_stated_category": None,        # whatever the docx itself says, kept separately as a claim to verify
         "location": None,
         "work_preference": None,
         "bio": None,
@@ -72,12 +73,23 @@ def parse_docx_content(file_path, folder_artist_id, folder_artist_name, category
                 current_section = None
                 continue
             elif "category" in key and val:
-                profile["category"] = val
+                # IMPORTANT: do NOT overwrite profile["category"] here.
+                # That field is the folder-based ground truth (musicians/
+                # photographers/video_editors), used for filtering, and
+                # is deliberately set once above and left alone -- the
+                # docx can state something different or broader (e.g.
+                # VO4_Shivam_media's docx says "Visual Artist" while its
+                # folder is video_editors) and that disagreement is
+                # itself a signal worth keeping, not silently erasing.
+                profile["docx_stated_category"] = val
                 current_section = None
                 continue
 
         if line_clean == "category" and i + 1 < len(lines):
-            profile["category"] = lines[i+1].strip()
+            # Same reasoning as above: this is the docx's own stated
+            # category (label-alone-then-next-line layout, e.g. the
+            # musician docx format), never the folder-based ground truth.
+            profile["docx_stated_category"] = lines[i+1].strip()
         elif line_clean == "location" and i + 1 < len(lines):
             profile["location"] = lines[i+1].strip()
         elif line_clean in ["work preference", "work preference-onsite"]:
@@ -111,7 +123,16 @@ if __name__ == "__main__":
         print(f"[ERROR] Could not locate dataset at: {dataset_path}")
         exit(1)
 
-    print(f"Target dataset directory: {dataset_path}\n")
+    # Separate output folder for generated JSON, kept apart from the
+    # source docx/media folders rather than writing profile.json inside
+    # each artist's own source directory.
+    output_dir = REPO_ROOT / "artist_profiles"
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    print(f"Target dataset directory: {dataset_path}")
+    print(f"Output directory: {output_dir}\n")
+
+    written_filenames = set()
 
     # Process all directories recursively
     for docx_file in dataset_path.rglob("*.docx"):
@@ -130,12 +151,29 @@ if __name__ == "__main__":
 
         # Run extraction
         profile = parse_docx_content(docx_file, folder_artist_id, folder_artist_name, category_name)
-        
-        # Save JSON file inside artist directory
-        json_path = artist_dir / "profile.json"
+
+        # Name the output file after the ARTIST FOLDER, not the docx-
+        # embedded artist_id -- the folder name is guaranteed unique
+        # (it's a real directory on disk), whereas artist_id can come
+        # from docx-internal text that parse_docx_content may override
+        # (see lines 40-47) and is known to collide across artists in
+        # this dataset (two different video editors' docx both say
+        # "V03"). Using the folder name as the filename avoids one
+        # artist's profile.json silently overwriting another's.
+        safe_filename = "".join(
+            c if c.isalnum() or c in ("_", "-") else "_" for c in folder_name
+        )
+        json_filename = f"{safe_filename}.json"
+
+        if json_filename in written_filenames:
+            print(f"[WARNING] Filename collision: {json_filename} (from folder '{folder_name}') "
+                  f"already written this run -- check for duplicate/near-duplicate folder names.")
+        written_filenames.add(json_filename)
+
+        json_path = output_dir / json_filename
         with open(json_path, 'w', encoding='utf-8') as f:
             json.dump(profile, f, indent=4)
             
-        print(f"Created JSON: {profile['artist_id']} - {profile['name']}")
+        print(f"Created JSON: {profile['artist_id']} - {profile['name']} -> {json_path.name}")
 
-    print("\nExtraction complete. All profile.json files generated.")
+    print(f"\nExtraction complete. {len(written_filenames)} profile JSON files generated in {output_dir}")

@@ -1,0 +1,117 @@
+{
+    "artist_id": "M02",
+    "name": "Neon Junction",
+    "category": "Electronic Live Act & Vocals",
+    "location": "Delhi NCR,",
+    "work_preference": "Onsite",
+    "bio": "Neon Junction is a 3-piece live electronic act based in Delhi NCR.",
+    "portfolio": [],
+    "artist_vibe_summary": "Neon Junction delivers an uplifting, energetic fusion of electronic chillout production, ambient soundscapes, and organic instrumentation complemented by prominent live vocals. Their sound is characterized by dynamic synth-and-percussion arrangements that maintain an engaging rhythmic flow across diverse tempos. This polished sonic signature establishes them as a versatile live electronic act well-suited for contemporary festival and venue stages.",
+    "multimodal_questions": [
+        {
+            "question": "Is the audio recording free from background hiss, clipping, or distortion?",
+            "media_type": "audio",
+            "vibe_metric": "Audio Clarity",
+            "question_type": "Standardized Benchmark",
+            "answer": "The audio recording is generally clear of significant background noise, but there are occasional instances of distortion towards the end of the track."
+        },
+        {
+            "question": "Are the primary vocals or lead instruments well-balanced in the mix?",
+            "media_type": "audio",
+            "vibe_metric": "Mixing Balance",
+            "question_type": "Standardized Benchmark",
+            "answer": "The provided information does not specify the balance of primary vocals versus lead instruments in the mix."
+        },
+        {
+            "question": "Does the performance maintain a consistent tempo and rhythm?",
+            "media_type": "audio",
+            "vibe_metric": "Rhythmic Consistency",
+            "question_type": "Standardized Benchmark",
+            "answer": "The first recording has a tempo of 89.3 BPM which is relatively consistent with the following tracks at 110.3, 85.2, and 81.5 BPM, indicating a somewhat steady tempo throughout. However, there's a slight variation in the last two beats of each bar, which might affect the consistency of the rhythm slightly."
+        },
+        {
+            "question": "Is the emotional tone of the performance energetic, melancholic, or neutral?",
+            "media_type": "audio",
+            "vibe_metric": "Emotional Tone",
+            "question_type": "Standardized Benchmark",
+            "answer": "The emotional tone appears to be energetic and uplifting."
+        },
+        {
+            "question": "What is the primary genre and instrumentation of this track?",
+            "media_type": "audio",
+            "vibe_metric": "Genre Classification",
+            "question_type": "Standardized Benchmark",
+            "answer": "The primary genre of this track is electronic chillout with a mix of classical and ambient influences. The instrumentation includes synthesizers, piano, bass, drums, and percussion."
+        },
+        {
+            "question": "Does the video performance feature exactly three members in the live act?",
+            "media_type": "video",
+            "vibe_metric": "member_count_verification",
+            "question_type": "Bio Verification",
+            "answer": "Skipped: No compatible media evidence available for this question type."
+        },
+        {
+            "question": "Can electronic elements and live instrumentation be heard simultaneously in the audio track?",
+            "media_type": "audio",
+            "vibe_metric": "live_electronic_fusion",
+            "question_type": "Bio Verification",
+            "answer": "Yes, the audio track features both electronic elements and live instrumentation."
+        },
+        {
+            "question": "Does the performance show the artists actively operating electronic hardware or instruments on stage?",
+            "media_type": "video",
+            "vibe_metric": "live_performance_authenticity",
+            "question_type": "Bio Verification",
+            "answer": "Skipped: No compatible media evidence available for this question type."
+        },
+        {
+            "question": "Are prominent live vocal performances present alongside the electronic production?",
+            "media_type": "audio",
+            "vibe_metric": "vocal_presence",
+            "question_type": "Bio Verification",
+            "answer": "Yes, there are prominent live vocal performances alongside the electronic production in some of the tracks."
+        },
+        {
+            "question": "Does the stage setup and atmosphere reflect a professional live electronic act suitable for onsite corporate or festival events?",
+            "media_type": "video",
+            "vibe_metric": "event_readiness",
+            "question_type": "Bio Verification",
+            "answer": "Skipped: No compatible media evidence available for this question type."
+        }
+    ],
+    "audio_signal_metrics": [
+        {
+            "duration_seconds": 195.58,
+            "estimated_bpm": 89.3,
+            "rhythmic_intensity": 2.63,
+            "is_instrumental_or_dense": true
+        },
+        {
+            "duration_seconds": 173.28,
+            "estimated_bpm": 110.3,
+            "rhythmic_intensity": 1.85,
+            "is_instrumental_or_dense": true
+        },
+        {
+            "duration_seconds": 173.63,
+            "estimated_bpm": 85.2,
+            "rhythmic_intensity": 1.57,
+            "is_instrumental_or_dense": true
+        },
+        {
+            "duration_seconds": 163.97,
+            "estimated_bpm": 81.5,
+            "rhythmic_intensity": 1.68,
+            "is_instrumental_or_dense": true
+        }
+    ],
+    "media_files_used": {
+        "audio_evidence_from": [
+            "alex-morgan-downtempo-chill-electronic-528322.mp3",
+            "holodr3ams-pretty-when-i-fall-419712.mp3",
+            "ahsleysnow-feel-like-home-523056.mp3",
+            "sub_clair-electronic-586100.mp3"
+        ],
+        "video_frame_evidence_from": []
+    }
+}

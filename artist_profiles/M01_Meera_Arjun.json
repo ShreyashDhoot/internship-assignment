@@ -1,0 +1,136 @@
+{
+    "artist_id": "M01",
+    "name": "Meera & Arjun",
+    "category": "vocalist and Guitarist",
+    "location": "Delhi NCR, India",
+    "work_preference": "Onsite",
+    "bio": "Meera & Arjun is an acoustic duo based in Delhi NCR.",
+    "portfolio": [],
+    "artist_vibe_summary": "Meera & Arjun deliver an intimate and melancholic acoustic aesthetic, drawing on laid-back grooves well-suited for relaxed cafe settings. However, technical execution remains inconsistent, hampered by noticeable audio distortion, mixing imbalances, and fluctuating tempos across performances. Professional development will require improved recording fidelity and tighter rhythmic cohesion to fully realize their artistic potential in live onsite environments.",
+    "multimodal_questions": [
+        {
+            "question": "Is the audio recording free from background hiss, clipping, or distortion?",
+            "media_type": "audio",
+            "vibe_metric": "Audio Clarity",
+            "question_type": "Standardized Benchmark",
+            "answer": "The first recording is plagued by noise, hissing, and distortion throughout. The second has noticeable distortion towards the end but begins clear and crisp. The third is marred by heavy distortion starting at the very beginning and continues to be so until the end. Lastly, the fourth recording starts with hissing noise before becoming clear and distortion-free up to the 1-minute mark."
+        },
+        {
+            "question": "Are the primary vocals or lead instruments well-balanced in the mix?",
+            "media_type": "audio",
+            "vibe_metric": "Mixing Balance",
+            "question_type": "Standardized Benchmark",
+            "answer": "The primary vocals are not clearly audible over the mix; it appears the instrumental is overpowering. The dynamic range seems limited as the soft segments are barely perceptible against the loud, dominant melody."
+        },
+        {
+            "question": "Does the performance maintain a consistent tempo and rhythm?",
+            "media_type": "audio",
+            "vibe_metric": "Rhythmic Consistency",
+            "question_type": "Standardized Benchmark",
+            "answer": "No, the performance has varying tempos and rhythms, with some segments being slow and others fast-paced."
+        },
+        {
+            "question": "Is the emotional tone of the performance energetic, melancholic, or neutral?",
+            "media_type": "audio",
+            "vibe_metric": "Emotional Tone",
+            "question_type": "Standardized Benchmark",
+            "answer": "The emotional tone appears to be primarily melancholic, with occasional moments that feel more upbeat due to the presence of music."
+        },
+        {
+            "question": "What is the primary genre and instrumentation of this track?",
+            "media_type": "audio",
+            "vibe_metric": "Genre Classification",
+            "question_type": "Standardized Benchmark",
+            "answer": "The primary genre of this track is rock nacional, featuring predominantly Brazilian rock elements with instruments such as the guitar, drums, and piano."
+        },
+        {
+            "question": "Does the audio recording feature exactly two performers, indicating a duo?",
+            "media_type": "audio",
+            "vibe_metric": "duo formation",
+            "question_type": "Bio Verification",
+            "answer": "Yes, the audio recording features exactly two performers, indicating a likely duo."
+        },
+        {
+            "question": "Can an acoustic guitar be clearly heard as the primary instrumental accompaniment?",
+            "media_type": "audio",
+            "vibe_metric": "acoustic instrumentation",
+            "question_type": "Bio Verification",
+            "answer": "No, there is no clear indication of an acoustic guitar being the primary instrumental in the mix; other instruments like a bass, drums, and possibly synthesizers are present along with ambient noise suggesting a complex soundscape."
+        },
+        {
+            "question": "Is there a distinct vocal performance present alongside the guitar?",
+            "media_type": "audio",
+            "vibe_metric": "vocal capability",
+            "question_type": "Bio Verification",
+            "answer": "No, the audio does not contain any discernible vocal performance alongside the guitar."
+        },
+        {
+            "question": "Do the visual elements show two individuals performing together live?",
+            "media_type": "video",
+            "vibe_metric": "live performance chemistry",
+            "question_type": "Bio Verification",
+            "answer": "No, the visual elements show only one individual performing live, singing and playing guitar. The video focuses on his solo performance, with close-ups of his face, hands, and instruments, and includes glimpses of his pedalboard, but no second performer is visible."
+        },
+        {
+            "question": "Is the overall musical style representative of an intimate acoustic setup suitable for cafes and small venues?",
+            "media_type": "audio",
+            "vibe_metric": "genre suitability",
+            "question_type": "Bio Verification",
+            "answer": "Yes, the combination of slow-paced acoustic guitar with Brazilian influences suggests a laid-back atmosphere which is ideal for intimate settings such as cafes and small venues."
+        }
+    ],
+    "audio_signal_metrics": [
+        {
+            "duration_seconds": 20.8,
+            "estimated_bpm": 93.8,
+            "rhythmic_intensity": 1.05,
+            "is_instrumental_or_dense": false
+        },
+        {
+            "duration_seconds": 19.54,
+            "estimated_bpm": 110.3,
+            "rhythmic_intensity": 1.14,
+            "is_instrumental_or_dense": false
+        },
+        {
+            "duration_seconds": 29.95,
+            "estimated_bpm": 0.0,
+            "rhythmic_intensity": 0.34,
+            "is_instrumental_or_dense": false
+        },
+        {
+            "duration_seconds": 29.37,
+            "estimated_bpm": 0.0,
+            "rhythmic_intensity": 0.06,
+            "is_instrumental_or_dense": false
+        },
+        {
+            "duration_seconds": 20.74,
+            "estimated_bpm": 133.9,
+            "rhythmic_intensity": 1.23,
+            "is_instrumental_or_dense": false
+        },
+        {
+            "duration_seconds": 20.74,
+            "estimated_bpm": 125.0,
+            "rhythmic_intensity": 1.3,
+            "is_instrumental_or_dense": false
+        }
+    ],
+    "media_files_used": {
+        "audio_evidence_from": [
+            "35860-408654164.mp4",
+            "35868-408654193.mp4",
+            "MA_upbeat_medley_rehearsal.wav",
+            "MA_cafe_demo_take1.wav",
+            "35863-408654169.mp4",
+            "35865-408654178.mp4"
+        ],
+        "video_frame_evidence_from": [
+            "35860-408654164.mp4",
+            "35868-408654193.mp4",
+            "35863-408654169.mp4",
+            "35865-408654178.mp4"
+        ]
+    }
+}

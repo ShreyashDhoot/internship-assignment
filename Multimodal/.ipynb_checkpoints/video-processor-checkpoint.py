@@ -86,24 +86,87 @@ def analyze_video_structure(video_path):
     }
     return metrics
 
-def extract_boundary_frames(video_path, cut_timestamps, num_cuts=3, frames_per_cut=8):
-    """Extracts a sequence of frames spanning selected cuts and tracks their exact timestamps."""
+def get_video_duration_seconds(video_path) -> float:
+    """Total duration, used to allocate this video's share of the frame budget."""
+    cap = cv2.VideoCapture(str(video_path))
+    fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
+    frame_count = cap.get(cv2.CAP_PROP_FRAME_COUNT)
+    cap.release()
+    return frame_count / fps if fps else 0.0
+
+
+def allocate_frame_budget(durations: list[float], total_budget: int, min_per_video: int = 4) -> list[int]:
+    """
+    Splits a fixed total frame budget across videos proportionally to
+    duration -- longer videos get more frames, shorter videos get fewer,
+    instead of every video getting the same fixed count regardless of
+    length (the old behavior, which is also what caused an OOM: 8 videos
+    x up to 24 frames each = up to 192 frames pooled into one VLM call).
+
+    Every video keeps at least `min_per_video` frames even if it's very
+    short. If the floor pushes the total over budget (common with many
+    short videos), the OVERAGE is trimmed only from videos that are
+    currently allocated ABOVE the floor -- videos already sitting at the
+    floor are never reduced further below it. A naive proportional
+    scale-down of every entry (including floor entries) would violate
+    the floor guarantee for exactly the videos it's meant to protect;
+    this was caught by testing the function against 8 mixed-duration
+    inputs before wiring it into the pipeline.
+    """
+    if not durations:
+        return []
+
+    total_duration = sum(durations) or 1.0
+    allocation = [max(min_per_video, round((d / total_duration) * total_budget)) for d in durations]
+
+    overage = sum(allocation) - total_budget
+    if overage > 0:
+        # Only trim from entries currently above the floor, proportional
+        # to how far above the floor each one is -- floor entries are
+        # left untouched.
+        above_floor_idx = [i for i, a in enumerate(allocation) if a > min_per_video]
+        above_floor_total = sum(allocation[i] - min_per_video for i in above_floor_idx)
+        if above_floor_total > 0:
+            for i in above_floor_idx:
+                share = (allocation[i] - min_per_video) / above_floor_total
+                trim = round(share * overage)
+                allocation[i] = max(min_per_video, allocation[i] - trim)
+        # If literally every video is at the floor and the floor itself
+        # exceeds the budget (e.g. 20 videos x min 4 = 80 > total_budget
+        # of 40), the budget is simply too small for this many videos --
+        # we accept going over rather than dropping any video to zero
+        # frames, since zero frames means zero evidence for that file.
+
+    return allocation
+
+
+def extract_boundary_frames(video_path, cut_timestamps, frame_budget: int, frames_per_cut: int = 4):
+    """
+    Extracts frames spanning selected cuts for ONE video, using this
+    video's own frame budget (already allocated proportionally to its
+    duration by the caller -- see allocate_frame_budget). Returns
+    (frames, timestamps) for just this video.
+    """
     cap = cv2.VideoCapture(str(video_path))
     fps = cap.get(cv2.CAP_PROP_FPS) or 30.0
     extracted_frames = []
     frame_timestamps = []
 
-    # Pick cuts spread evenly across the video
+    num_cuts = max(1, frame_budget // frames_per_cut)
+
     if len(cut_timestamps) > num_cuts:
         selected_cuts = np.linspace(0, len(cut_timestamps) - 1, num_cuts, dtype=int)
         target_cuts = [cut_timestamps[i] for i in selected_cuts]
     else:
-        target_cuts = cut_timestamps
+        target_cuts = cut_timestamps if cut_timestamps else [0.0]  # no detected cuts -> still sample something
 
     for cut_time in target_cuts:
-        # Extract a 2-second window centered on the cut point (-1s to +1s)
+        if len(extracted_frames) >= frame_budget:
+            break
         start_frame = max(0, int((cut_time - 1.0) * fps))
         for offset in range(frames_per_cut):
+            if len(extracted_frames) >= frame_budget:
+                break
             frame_idx = start_frame + int(offset * (fps / (frames_per_cut / 2)))
             cap.set(cv2.CAP_PROP_POS_FRAMES, frame_idx)
             ret, frame = cap.read()
@@ -174,6 +237,16 @@ def process_video_editors():
         print(f"[ERROR] Directory not found: {video_editors_dir}")
         return
 
+    # JSON profiles now live in a separate flat folder (written by
+    # docx-to-json.py), one file per artist named after the artist's
+    # FOLDER (e.g. VO4_Shivam_media.json) -- media stays exactly where
+    # it was, only the JSON location changed. Pairing is done by
+    # matching the artist folder's name to a JSON filename explicitly.
+    profiles_dir = REPO_ROOT / "artist_profiles"
+    if not profiles_dir.exists():
+        print(f"[ERROR] Profiles directory not found: {profiles_dir}")
+        return
+
     # Load Qwen3-VL model once
     print("Loading Qwen3-VL-4B-Thinking model...")
     MODEL_ID = "Qwen/Qwen3-VL-4B-Thinking"
@@ -184,10 +257,15 @@ def process_video_editors():
         if not artist_dir.is_dir():
             continue
 
-        json_file = artist_dir / "profile.json"
+        # Explicit match, same folder name, different root. Loud
+        # warning (not a silent skip) if the JSON is missing, since a
+        # silently-skipped artist is easy to miss until much later.
+        json_file = profiles_dir / f"{artist_dir.name}.json"
         media_dir = artist_dir / "media"
 
         if not json_file.exists():
+            print(f"[WARNING] No matching profile JSON for '{artist_dir.name}' "
+                  f"(expected {json_file}). Skipping -- run docx-to-json.py first.")
             continue
 
         video_extensions = {".mp4", ".mov", ".mkv", ".avi"}
@@ -209,21 +287,41 @@ def process_video_editors():
         with open(json_file, "r", encoding="utf-8") as f:
             profile_data = json.load(f)
 
-        # 1. Run Signal Processing across ALL portfolio videos
-        all_cut_timestamps = []
+        # 1. Compute duration-proportional frame budget across ALL videos.
+        # Fixed total cap (not per-video) is what keeps the pooled VLM
+        # call within GPU memory regardless of how many videos this
+        # artist has -- confirmed real OOM on VO5_Roshan's 8 videos at
+        # the old fixed-24-per-video rate (up to 192 pooled frames).
+        TOTAL_FRAME_BUDGET = 40  # tune based on available GPU memory
+        durations = [get_video_duration_seconds(v) for v in video_files]
+        frame_budgets = allocate_frame_budget(durations, TOTAL_FRAME_BUDGET)
+
+        print(f"   Frame budget ({TOTAL_FRAME_BUDGET} total) allocated by duration:")
+        for vf, dur, budget in zip(video_files, durations, frame_budgets):
+            print(f"     {vf.name}: {dur:.1f}s -> {budget} frames")
+
+        # 2. Run Signal Processing across ALL portfolio videos, extracting
+        # each video's own frame allocation. Timestamps are kept PER VIDEO
+        # (not flattened into one combined list) so the JSON records
+        # exactly which timestamps came from which file.
         all_boundary_frames = []
-        all_boundary_timestamps = []
+        per_video_evidence = []  # one entry per video: filename + its own timestamps
         combined_metrics_list = []
 
-        for video_file in video_files:
+        for video_file, budget in zip(video_files, frame_budgets):
             print(f"   -> Processing file: {video_file.name}")
             metrics = analyze_video_structure(video_file)
             combined_metrics_list.append(metrics)
-            
-            # Extract frames for this specific video
-            frames, timestamps = extract_boundary_frames(video_file, metrics["cut_timestamps"])
+
+            frames, timestamps = extract_boundary_frames(video_file, metrics["cut_timestamps"], frame_budget=budget)
             all_boundary_frames.extend(frames)
-            all_boundary_timestamps.extend(timestamps)
+            per_video_evidence.append({
+                "file": video_file.name,
+                "duration_seconds": round(get_video_duration_seconds(video_file), 2),
+                "frame_budget_allocated": budget,
+                "frames_actually_sampled": len(frames),
+                "sampled_timestamps": timestamps,
+            })
 
         # Aggregate metrics for prompt context
         avg_shot_length = np.mean([m["average_shot_length_seconds"] for m in combined_metrics_list])
@@ -231,12 +329,13 @@ def process_video_editors():
 
         aggregate_metrics = {
             "total_videos_analyzed": len(video_files),
+            "total_frame_budget": TOTAL_FRAME_BUDGET,
             "average_shot_length_seconds": round(float(avg_shot_length), 2),
             "pacing_style": combined_metrics_list[0]["pacing_style"], # Take primary style
             "beat_sync_accuracy_percentage": round(float(avg_beat_sync), 2) if not np.isnan(avg_beat_sync) else None,
-            "sampled_boundary_frame_timestamps": all_boundary_timestamps
+            "per_video_frame_evidence": per_video_evidence,  # <- per-video timestamps live here
         }
-        
+
         profile_data["editing_signal_metrics"] = aggregate_metrics
 
         # 2. Answer Multimodal Questions using frames collected across ALL videos
@@ -252,30 +351,7 @@ def process_video_editors():
                 except Exception as e:
                     q_obj["answer"] = f"Evaluation failed: {str(e)}"
 
-        # 2. Extract Cut-Spanning Frame Sequences & Timestamps
-        boundary_frames, boundary_timestamps = extract_boundary_frames(
-            primary_video, structure_metrics["cut_timestamps"]
-        )
-
-        # Save boundary frame timestamps into signal metrics
-        structure_metrics["sampled_boundary_frame_timestamps"] = boundary_timestamps
-        profile_data["editing_signal_metrics"] = structure_metrics
-
-        # 3. Answer Multimodal Questions
-        multimodal_questions = profile_data.get("multimodal_questions", [])
-        for idx, q_obj in enumerate(multimodal_questions, start=1):
-            if q_obj.get("media_type") == "video" and not q_obj.get("answer"):
-                print(f" -> Q{idx}/10: Asking VLM: '{q_obj['question'][:60]}...'")
-                try:
-                    answer = evaluate_video_with_vlm(
-                        model, processor, boundary_frames, q_obj["question"], structure_metrics
-                    )
-                    q_obj["answer"] = answer
-                except Exception as e:
-                    print(f"    [Error]: {e}")
-                    q_obj["answer"] = f"Evaluation failed: {str(e)}"
-
-        # 4. Open Discovery Pass (Capturing Unasked Editing Craft)
+        # 3. Open Discovery Pass (Capturing Unasked Editing Craft)
         print(" -> Running Open Discovery Pass (Editing Craft)...")
         discovery_prompt = (
             "Examine the frame transitions and signal metrics. Identify any notable video editing techniques, "
@@ -283,12 +359,12 @@ def process_video_editors():
         )
         try:
             profile_data["unasked_artistic_evidence"] = evaluate_video_with_vlm(
-                model, processor, boundary_frames, discovery_prompt, structure_metrics
+                model, processor, all_boundary_frames, discovery_prompt, aggregate_metrics
             )
         except Exception as e:
             profile_data["unasked_artistic_evidence"] = f"Discovery pass failed: {str(e)}"
 
-        # 5. Overwrite JSON
+        # 4. Overwrite JSON
         with open(json_file, "w", encoding="utf-8") as f:
             json.dump(profile_data, f, indent=4)
 

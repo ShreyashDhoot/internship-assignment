@@ -71,7 +71,7 @@ def run_vlm_inference(image_paths, question_text):
 # ---------------------------------------------------------
 # 3. MAIN EVALUATION LOOP
 # ---------------------------------------------------------
-def process_photographers(dataset_base_path):
+def process_photographers(dataset_base_path, profiles_dir):
     base_dir = Path(dataset_base_path)
     photographers_dir = base_dir / "photographers"
 
@@ -79,16 +79,28 @@ def process_photographers(dataset_base_path):
         print(f"Directory not found: {photographers_dir}")
         return
 
+    profiles_dir = Path(profiles_dir)
+    if not profiles_dir.exists():
+        print(f"[ERROR] Profiles directory not found: {profiles_dir}")
+        return
+
     # Iterate through all photographer artist directories (e.g., P01_Aanya_Rao)
     for artist_dir in photographers_dir.iterdir():
         if not artist_dir.is_dir():
             continue
 
-        json_file = artist_dir / "profile.json"
+        # JSON profiles now live in a separate flat folder (written by
+        # docx-to-json.py), one file per artist named after the
+        # artist's FOLDER (e.g. P01_Aanya_Rao.json) -- media stays
+        # exactly where it was, only the JSON location changed.
+        # Pairing is done by matching the artist folder's name to a
+        # JSON filename explicitly, not by shared directory nesting.
+        json_file = profiles_dir / f"{artist_dir.name}.json"
         media_dir = artist_dir / "media"
 
         if not json_file.exists():
-            print(f"Skipping {artist_dir.name}: profile.json missing.")
+            print(f"[WARNING] No matching profile JSON for '{artist_dir.name}' "
+                  f"(expected {json_file}). Skipping -- run docx-to-json.py first.")
             continue
 
         # Find all valid images inside the media folder
@@ -160,7 +172,7 @@ if __name__ == "__main__":
     # Resolves the repository root (.../internship-assignment)
     REPO_ROOT = SCRIPT_DIR.parent
     
-    # Path to artist profiles relative to repo root
+    # Path to artist MEDIA (unchanged -- media stays in its original location)
     dataset_path = REPO_ROOT / "Data-set" / "artist_profiles"
     
     # Fallback check if script is executed directly inside the repo root folder
@@ -171,6 +183,13 @@ if __name__ == "__main__":
         print(f"[ERROR] Could not locate dataset at: {dataset_path}")
         exit(1)
 
-    print(f"Target dataset directory: {dataset_path}\n")
+    # Path to the flat JSON profiles folder written by docx-to-json.py
+    # (separate from the media folder above -- see process_photographers)
+    profiles_path = REPO_ROOT / "artist_profiles"
+    if not profiles_path.exists():
+        profiles_path = SCRIPT_DIR / "artist_profiles"
+
+    print(f"Target dataset directory: {dataset_path}")
+    print(f"Target profiles directory: {profiles_path}\n")
     
-    process_photographers(dataset_path)
+    process_photographers(dataset_path, profiles_path)

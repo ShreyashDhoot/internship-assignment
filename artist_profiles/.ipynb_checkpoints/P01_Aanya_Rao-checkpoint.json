@@ -1,0 +1,13 @@
+{
+    "artist_id": "P01",
+    "name": "Aanya Rao",
+    "category": "Photographer",
+    "location": "Delhi / NCR",
+    "work_preference": "Travel available",
+    "bio": "Photographer working in events, caf\u00e9s, workshops, team days and small business photography.",
+    "portfolio": [
+        "Community literature evening",
+        "Co-working team day",
+        "Neighbourhood caf\u00e9 content"
+    ]
+}
