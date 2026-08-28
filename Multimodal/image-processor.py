@@ -7,7 +7,7 @@ from transformers import Qwen3VLForConditionalGeneration, AutoProcessor
 # ---------------------------------------------------------
 # 1. MODEL INITIALIZATION (Load once into GPU memory)
 # ---------------------------------------------------------
-MODEL_ID = "Qwen/Qwen3-VL-4B-Thinking"
+MODEL_ID = "Qwen/Qwen3-VL-4B-Instruct"
 
 print(f"Loading model {MODEL_ID}...")
 model = Qwen3VLForConditionalGeneration.from_pretrained(
@@ -89,12 +89,6 @@ def process_photographers(dataset_base_path, profiles_dir):
         if not artist_dir.is_dir():
             continue
 
-        # JSON profiles now live in a separate flat folder (written by
-        # docx-to-json.py), one file per artist named after the
-        # artist's FOLDER (e.g. P01_Aanya_Rao.json) -- media stays
-        # exactly where it was, only the JSON location changed.
-        # Pairing is done by matching the artist folder's name to a
-        # JSON filename explicitly, not by shared directory nesting.
         json_file = profiles_dir / f"{artist_dir.name}.json"
         media_dir = artist_dir / "media"
 

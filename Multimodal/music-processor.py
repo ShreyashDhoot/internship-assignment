@@ -30,18 +30,7 @@ VIDEO_CONTAINER_EXTENSIONS = {".mp4", ".mov"}
 # 2. AUDIO EXTRACTION FROM VIDEO CONTAINERS
 # ---------------------------------------------------------
 def extract_audio_to_wav(video_path: Path):
-    """
-    librosa/soundfile can fail to demux audio directly from some mp4
-    containers ("Format not recognised") depending on codec -- this is
-    exactly the crash seen on real files in this dataset
-    (35860-408654164.mp4, VID_20260820_220500_334.mp4). ffmpeg is far
-    more robust at demuxing arbitrary containers, so we extract the
-    audio track to a temp .wav first and hand THAT to librosa, rather
-    than pointing librosa at the .mp4 directly.
 
-    Returns the path to the extracted wav, or None if extraction failed
-    (e.g. the file genuinely has no audio track, or ffmpeg is missing).
-    """
     tmp_wav = Path(tempfile.gettempdir()) / f"{video_path.stem}_extracted_audio.wav"
     cmd = [
         "ffmpeg", "-y", "-i", str(video_path),
@@ -140,13 +129,7 @@ def evaluate_audio_with_model(audio_model, audio_processor, audio_arrays_with_sr
     this artist (both standalone audio files AND audio tracks extracted
     from video files) -- not just one arbitrarily chosen "primary" file.
 
-    Per the official Qwen2-Audio processor docs (confirmed against
-    huggingface.co/docs/transformers/en/model_doc/qwen2_audio):
-      - the keyword is `audio=`, NOT `audios=` (transformers silently
-        ignores unknown kwargs instead of raising, which is exactly the
-        "not a valid argument" warning seen in an earlier run -- the
-        audio was being dropped entirely, and the model was answering
-        blind, off the text prompt only).
+    Per the official Qwen2-Audio processor docs:
       - the prompt text must contain one <|AUDIO|> placeholder token per
         audio clip, built via apply_chat_template over a conversation
         with one {"type": "audio"} content block per clip -- a raw
@@ -195,7 +178,7 @@ def evaluate_video_with_vlm(vlm_model, vlm_processor, all_frames, question_text)
     content = [{"type": "image", "image": frame} for frame in all_frames]
     content.append({
         "type": "text",
-        "text": f"Evaluate this musician's performance across all provided video clips, directly and concisely in 1-3 sentences: {question_text}",
+        "text": f"Evaluate this musician's performance across all provided video clips, directly and concisely : {question_text} \n Warning: do not describe each evaluation individually",
     })
 
     messages = [{"role": "user", "content": content}]
@@ -204,7 +187,7 @@ def evaluate_video_with_vlm(vlm_model, vlm_processor, all_frames, question_text)
     ).to(vlm_model.device)
 
     with torch.no_grad():
-        generated_ids = vlm_model.generate(**inputs, max_new_tokens=150)
+        generated_ids = vlm_model.generate(**inputs, max_new_tokens=512)
 
     generated_ids_trimmed = [
         out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
@@ -223,13 +206,6 @@ def process_musicians():
         print(f"[ERROR] Directory not found: {musicians_dir}")
         return
 
-    # JSON profiles now live in a separate flat folder (written by
-    # docx-to-json.py), one file per artist named after the artist's
-    # FOLDER (e.g. M01_Meera_Arjun.json) -- no longer nested inside
-    # each artist's own media directory. Media stays exactly where it
-    # was; only the JSON location changed, so pairing is now done by
-    # matching the artist folder's name to a JSON filename explicitly,
-    # rather than relying on shared parent-directory nesting.
     profiles_dir = REPO_ROOT / "artist_profiles"
     if not profiles_dir.exists():
         print(f"[ERROR] Profiles directory not found: {profiles_dir}")
@@ -250,13 +226,6 @@ def process_musicians():
         if not artist_dir.is_dir():
             continue
 
-        # Explicit match: this artist's media folder is
-        # musicians/M01_Meera_Arjun/media/, so its profile JSON must be
-        # artist_profiles/M01_Meera_Arjun.json -- same folder name, just
-        # a different root. If it's missing, this is a real data
-        # problem worth surfacing loudly (e.g. docx-to-json.py wasn't
-        # re-run after a folder was renamed), not silently skipping the
-        # artist with no indication why they never got evaluated.
         json_file = profiles_dir / f"{artist_dir.name}.json"
         media_dir = artist_dir / "media"
 
@@ -284,10 +253,9 @@ def process_musicians():
         with open(json_file, "r", encoding="utf-8") as f:
             profile_data = json.load(f)
 
-        # --- Pool audio evidence across ALL media files (not just one) ---
+        # --- Pool audio evidence across ALL media files ---
         # Both pure-audio files AND the audio track of video files count
-        # as audio evidence -- e.g. a live-performance mp4 still has a
-        # usable audio track for judging musicianship questions. Each
+        # as audio evidence usable audio track for judging musicianship questions. Each
         # file is processed exactly once here; results are reused below
         # for both the model call and the audit-trail metadata.
         all_audio_arrays_with_sr = []
@@ -312,17 +280,6 @@ def process_musicians():
             "video_frame_evidence_from": [f.name for f in video_files],
         }
 
-        # --- Answer questions using pooled evidence of the right type ---
-        # IMPORTANT: only skip a question if it already has a genuine answer.
-        # A prior run's placeholder strings ("Skipped: ...", "Evaluation
-        # failed: ...") are still non-empty and would otherwise be treated
-        # as truthy by a plain `if q_obj.get("answer")` check -- permanently
-        # locking in a failed result on every future re-run instead of
-        # retrying it. Confirmed real: M01's audio questions were stuck on
-        # "Skipped: Missing compatible media format..." from an earlier
-        # run (before ffmpeg was installed) and never got re-attempted
-        # once ffmpeg was fixed, because they already had *a* string in
-        # "answer".
         FAILURE_MARKERS = ("Skipped:", "Evaluation failed:")
 
         def _needs_retry(q_obj: dict) -> bool:

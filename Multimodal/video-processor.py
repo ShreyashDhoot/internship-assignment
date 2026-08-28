@@ -98,10 +98,7 @@ def get_video_duration_seconds(video_path) -> float:
 def allocate_frame_budget(durations: list[float], total_budget: int, min_per_video: int = 4) -> list[int]:
     """
     Splits a fixed total frame budget across videos proportionally to
-    duration -- longer videos get more frames, shorter videos get fewer,
-    instead of every video getting the same fixed count regardless of
-    length (the old behavior, which is also what caused an OOM: 8 videos
-    x up to 24 frames each = up to 192 frames pooled into one VLM call).
+    duration -- longer videos get more frames, shorter videos get fewer.
 
     Every video keeps at least `min_per_video` frames even if it's very
     short. If the floor pushes the total over budget (common with many
@@ -131,11 +128,6 @@ def allocate_frame_budget(durations: list[float], total_budget: int, min_per_vid
                 share = (allocation[i] - min_per_video) / above_floor_total
                 trim = round(share * overage)
                 allocation[i] = max(min_per_video, allocation[i] - trim)
-        # If literally every video is at the floor and the floor itself
-        # exceeds the budget (e.g. 20 videos x min 4 = 80 > total_budget
-        # of 40), the budget is simply too small for this many videos --
-        # we accept going over rather than dropping any video to zero
-        # frames, since zero frames means zero evidence for that file.
 
     return allocation
 
@@ -215,7 +207,7 @@ def evaluate_video_with_vlm(model, processor, frames, question_text, metrics_con
     inputs = inputs.to(model.device)
 
     with torch.no_grad():
-        generated_ids = model.generate(**inputs, max_new_tokens=256)
+        generated_ids = model.generate(**inputs, max_new_tokens=512)
 
     generated_ids_trimmed = [
         out_ids[len(in_ids):] for in_ids, out_ids in zip(inputs.input_ids, generated_ids)
@@ -237,19 +229,14 @@ def process_video_editors():
         print(f"[ERROR] Directory not found: {video_editors_dir}")
         return
 
-    # JSON profiles now live in a separate flat folder (written by
-    # docx-to-json.py), one file per artist named after the artist's
-    # FOLDER (e.g. VO4_Shivam_media.json) -- media stays exactly where
-    # it was, only the JSON location changed. Pairing is done by
-    # matching the artist folder's name to a JSON filename explicitly.
     profiles_dir = REPO_ROOT / "artist_profiles"
     if not profiles_dir.exists():
         print(f"[ERROR] Profiles directory not found: {profiles_dir}")
         return
 
     # Load Qwen3-VL model once
-    print("Loading Qwen3-VL-4B-Thinking model...")
-    MODEL_ID = "Qwen/Qwen3-VL-4B-Thinking"
+    print("Loading Qwen3-VL-4B-Instruct model...")
+    MODEL_ID = "Qwen/Qwen3-VL-4B-Instruct"
     model = Qwen3VLForConditionalGeneration.from_pretrained(MODEL_ID, dtype="auto", device_map="auto")
     processor = AutoProcessor.from_pretrained(MODEL_ID)
 
@@ -257,9 +244,6 @@ def process_video_editors():
         if not artist_dir.is_dir():
             continue
 
-        # Explicit match, same folder name, different root. Loud
-        # warning (not a silent skip) if the JSON is missing, since a
-        # silently-skipped artist is easy to miss until much later.
         json_file = profiles_dir / f"{artist_dir.name}.json"
         media_dir = artist_dir / "media"
 
@@ -287,11 +271,6 @@ def process_video_editors():
         with open(json_file, "r", encoding="utf-8") as f:
             profile_data = json.load(f)
 
-        # 1. Compute duration-proportional frame budget across ALL videos.
-        # Fixed total cap (not per-video) is what keeps the pooled VLM
-        # call within GPU memory regardless of how many videos this
-        # artist has -- confirmed real OOM on VO5_Roshan's 8 videos at
-        # the old fixed-24-per-video rate (up to 192 pooled frames).
         TOTAL_FRAME_BUDGET = 40  # tune based on available GPU memory
         durations = [get_video_duration_seconds(v) for v in video_files]
         frame_budgets = allocate_frame_budget(durations, TOTAL_FRAME_BUDGET)
@@ -300,10 +279,9 @@ def process_video_editors():
         for vf, dur, budget in zip(video_files, durations, frame_budgets):
             print(f"     {vf.name}: {dur:.1f}s -> {budget} frames")
 
-        # 2. Run Signal Processing across ALL portfolio videos, extracting
+        # Run Signal Processing across ALL portfolio videos, extracting
         # each video's own frame allocation. Timestamps are kept PER VIDEO
-        # (not flattened into one combined list) so the JSON records
-        # exactly which timestamps came from which file.
+        # so the JSON records exactly which timestamps came from which file.
         all_boundary_frames = []
         per_video_evidence = []  # one entry per video: filename + its own timestamps
         combined_metrics_list = []
