@@ -278,7 +278,7 @@ if __name__ == "__main__":
         result = process_follow_up(prior_recommendation_path, follow_up_path, conn)
 
         output_filename = "update_recommendation.json"
-        output_path = OUTPUT_DIR / output_filename
+        output_path = OUTPUT_DIR / "submission-files" / output_filename
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(result, f, indent=2)
 

@@ -590,7 +590,8 @@ if __name__ == "__main__":
 
         print(f" -> Saved {output_path.name}")
 
-    jsonl_path = OUTPUT_DIR / "recommendations.jsonl"
+    jsonl_path = REPO_ROOT / "submission-files" / "recommendations.jsonl"
+    jsonl_path.parent.mkdir(parents=True, exist_ok=True)
     write_recommendations_jsonl(results, jsonl_path)
     print(f" -> Saved {jsonl_path.name}")
 
