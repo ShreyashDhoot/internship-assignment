@@ -52,9 +52,20 @@ JSON per conversation. Pipeline, matching what we designed:
      "why this score" answer is visible at a glance without digging into
      nested dimension_scores.
 
-  5. OUTPUT: recommendations.json with top 2 (or fewer / a stated "no
+  5. IMPROVE YOUR MATCHES (LLM, one call, AFTER ranking -- "show results
+     before questions"): at most 2 follow-up questions for the hirer,
+     each with reasoning tied to specific candidates/scores explaining
+     how an answer could materially change the ranking. Grounded in the
+     actual expanded_request source tags (stated/inferred/unknown) and
+     the actual per-candidate reasoning already produced -- not a
+     templated "field is unknown, therefore ask about it" rule. Can
+     return zero questions if none genuinely qualify; never invents
+     questions to pad the list to 2.
+
+  6. OUTPUT: recommendations.json with top 2 (or fewer / a stated "no
      plausible match" if the pool is empty even after relaxation), each
-     with per-dimension scores + reasoning + weighted total.
+     with per-dimension scores + reasoning + weighted total, plus the
+     improve_your_matches section from step 5.
 
 Re-ranking (the follow-up file) is intentionally a SEPARATE script
 (reranker.py) that reuses these same building blocks against a
@@ -390,7 +401,94 @@ def build_overall_reasoning(dimension_scores: dict) -> str:
 
 
 # ---------------------------------------------------------
-# 4. MAIN PER-HIRER PIPELINE
+# 4. IMPROVE YOUR MATCHES: up to 2 questions, each with reasoning about
+#    material impact on the ranking (LLM call, shown AFTER the shortlist
+#    per the brief -- "show results before questions")
+# ---------------------------------------------------------
+IMPROVE_MATCHES_PROMPT_TEMPLATE = """You already produced a ranked shortlist of candidates for a hiring
+request. Your job now is NOT to re-score anyone -- it's to propose at most 2 follow-up questions to ask
+the hirer that could plausibly CHANGE this ranking if answered.
+
+You are given:
+1. The structured hiring request, where each field is tagged "stated" (the hirer said this directly),
+   "inferred" (a reasonable guess from context, not confirmed), or "unknown" (the conversation never
+   resolved this).
+2. The current top candidates with their per-dimension scores and reasoning.
+
+Propose a question ONLY if you can point to a SPECIFIC way the answer could realistically change who
+ranks #1 or #2 -- for example: a field that is "inferred" or "unknown" and where the top candidates'
+scores plausibly hinge on what the true answer is, or a gap in the request that caused a candidate's
+score to be capped (visible in their reasoning) because information was missing.
+
+Do NOT propose generic clarifying questions just because a field happens to be unconfirmed -- only ask
+if getting an answer could concretely move the ranking. If you cannot identify any question that clears
+that bar, return an empty list. Never propose more than 2 questions.
+
+Output ONLY a JSON object (no markdown fences, no preamble) with EXACTLY this shape:
+
+{{
+  "questions": [
+    {{
+      "question": "a specific, answerable question to put to the hirer",
+      "relates_to_field": "the expanded_request field name this question would resolve, or null if it doesn't map to one of the listed fields",
+      "reasoning": "1-2 sentences: which candidate(s)/scores this could change, and how -- be concrete, reference the actual candidates and dimension scores below, not a generic statement"
+    }}
+  ]
+}}
+
+("questions" may be an empty list -- do not pad it to 2 if fewer than 2 genuinely qualify.)
+
+Hiring Request (structured, with stated/inferred/unknown tags):
+{expanded_request_json}
+
+Current Top Candidates (with per-dimension scores and reasoning):
+{top_candidates_json}
+"""
+
+
+def generate_improve_your_matches(expanded_request: dict, top_candidates: list[dict]) -> list[dict]:
+    """
+    LLM call, made AFTER ranking (never influences the ranking itself).
+    Grounded in the actual expanded_request source tags and the actual
+    per-candidate reasoning already produced, so questions are tied to
+    something real rather than templated off "any field marked unknown."
+    Returns [] (not a crash) if the model call fails or returns
+    something unparseable -- an empty "improve your matches" section is
+    fine; a broken pipeline run is not.
+    """
+    # Strip fields the model doesn't need and that would just add noise/
+    # cost to the prompt (full candidate profile JSON already informed
+    # the dimension scores/reasoning below; no need to resend it here).
+    slim_candidates = [
+        {
+            "artist_id": c["artist_id"],
+            "name": c["name"],
+            "dimension_scores": c["dimension_scores"],
+            "weighted_total_score": c["weighted_total_score"],
+        }
+        for c in top_candidates
+    ]
+
+    model = genai.GenerativeModel("gemini-3.5-flash-lite")
+    prompt = IMPROVE_MATCHES_PROMPT_TEMPLATE.format(
+        expanded_request_json=json.dumps(expanded_request, indent=2),
+        top_candidates_json=json.dumps(slim_candidates, indent=2),
+    )
+    try:
+        response = model.generate_content(
+            prompt,
+            generation_config=genai.GenerationConfig(response_mime_type="application/json"),
+        )
+        parsed = json.loads(response.text)
+        questions = parsed.get("questions", [])
+        return questions[:2]
+    except Exception as e:
+        print(f"    [ERROR] Improve-your-matches generation failed: {e}")
+        return []
+
+
+# ---------------------------------------------------------
+# 5. MAIN PER-HIRER PIPELINE
 # ---------------------------------------------------------
 def process_hirer_conversation(conversation_path: Path, conn) -> dict:
     conversation_text = conversation_path.read_text(encoding="utf-8")
@@ -431,6 +529,14 @@ def process_hirer_conversation(conversation_path: Path, conn) -> dict:
     scored_candidates.sort(key=lambda c: c["weighted_total_score"], reverse=True)
     top_candidates = scored_candidates[:2]
 
+    # "Improve your matches" is generated AFTER the shortlist and never
+    # feeds back into it -- results before questions, per the brief.
+    improve_your_matches = []
+    if top_candidates:
+        print(" -> Generating improve-your-matches questions...")
+        improve_your_matches = generate_improve_your_matches(expanded_request, top_candidates)
+        print(f"    {len(improve_your_matches)} question(s) proposed.")
+
     result = {
         "hirer_conversation_file": conversation_path.name,
         "expanded_request": expanded_request,
@@ -438,6 +544,7 @@ def process_hirer_conversation(conversation_path: Path, conn) -> dict:
         "candidate_pool_size": len(candidates),
         "scoring_weights_used": SCORING_WEIGHTS,
         "recommendations": top_candidates,
+        "improve_your_matches": improve_your_matches,
     }
 
     if not candidates:
@@ -447,6 +554,12 @@ def process_hirer_conversation(conversation_path: Path, conn) -> dict:
         )
 
     return result
+
+
+def write_recommendations_jsonl(results: list[dict], output_path: Path) -> None:
+    with open(output_path, "w", encoding="utf-8") as f:
+        for result in results:
+            f.write(json.dumps(result) + "\n")
 
 
 if __name__ == "__main__":
@@ -465,8 +578,10 @@ if __name__ == "__main__":
         print("No hirer conversation files found.")
         exit(0)
 
+    results = []
     for conversation_path in conversation_files:
         result = process_hirer_conversation(conversation_path, conn)
+        results.append(result)
 
         output_filename = conversation_path.stem + "_recommendations.json"
         output_path = OUTPUT_DIR / output_filename
@@ -474,6 +589,10 @@ if __name__ == "__main__":
             json.dump(result, f, indent=2)
 
         print(f" -> Saved {output_path.name}")
+
+    jsonl_path = OUTPUT_DIR / "recommendations.jsonl"
+    write_recommendations_jsonl(results, jsonl_path)
+    print(f" -> Saved {jsonl_path.name}")
 
     conn.close()
     print(f"\nDone. {len(conversation_files)} recommendation file(s) written to {OUTPUT_DIR}")

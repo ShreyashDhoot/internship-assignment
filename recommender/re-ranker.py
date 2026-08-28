@@ -1,25 +1,15 @@
 """
 reranker.py
 
-Handles the follow-up / re-ranking case: a hirer sends NEW information
-after their initial recommendations.json was already produced by
-recommender.py. This is deliberately NOT "run the whole pipeline again
-from scratch on the combined text" -- see decision_note.md for why:
-treating a follow-up as a brand-new request throws away the ability to
-say what changed and why, which is explicitly required (see the brief's
-"re-rank... explain what changed and why").
+Handles the follow-up request for a hirer conversation uses previous expanded request and new followup conversation to 
+retrieve and rerank candidates.
 
 Pipeline:
   1. Load the EXISTING expanded_request from the prior
-     recommendations.json (recommender.py already extracted and saved
-     it there -- this is the persisted state the follow-up updates,
-     not a fresh extraction from nothing).
+     recommendations.json
   2. Read the follow-up text file. Send BOTH the existing expanded
      request and the new text to the LLM, asking it to produce an
-     UPDATED expanded request -- fields move from
-     inferred/unknown to stated, values can change, new unknowns can
-     appear -- rather than regenerating the object blind to what was
-     already known.
+     UPDATED expanded request.
   3. Re-run the exact same deterministic search (search_candidates) and
      per-candidate scoring (score_candidate) from recommender.py against
      the updated expanded request. These are imported, not
@@ -28,9 +18,8 @@ Pipeline:
   4. Diff the OLD ranking (from the input recommendations.json) against
      the NEW ranking computed here -- which candidates moved, which
      appeared/disappeared -- and record that diff explicitly in the
-     output, alongside a short LLM-free, code-generated explanation
-     tied to which expanded_request fields actually changed.
-  5. Save updated_recommendation.json in the same shape as
+     output.
+    5. Save update_recommendation.json in the same shape as
      recommendations.json, plus the added "what_changed" section.
 """
 
@@ -40,10 +29,6 @@ import warnings
 from pathlib import Path
 from dotenv import load_dotenv, find_dotenv
 import google.generativeai as genai
-
-# Reuse recommender.py's search/scoring logic directly rather than
-# reimplementing it -- if search_candidates or score_candidate change,
-# both the first-pass and re-rank pass stay in sync automatically.
 import recommender
 
 warnings.filterwarnings("ignore")
@@ -57,9 +42,7 @@ DB_PATH = REPO_ROOT / "artists.db"
 OUTPUT_DIR = REPO_ROOT / "recommendations"
 
 
-# ---------------------------------------------------------
 # 1. MERGE: existing expanded_request + follow-up text -> updated expanded_request
-# ---------------------------------------------------------
 MERGE_PROMPT_TEMPLATE = """You previously extracted a structured hiring request from a conversation. The
 hirer has now sent FOLLOW-UP information. Update the structured request to reflect what's now known --
 do not regenerate it from scratch, and do not discard anything from the original that the follow-up
@@ -107,16 +90,12 @@ def merge_expanded_request(original_request: dict, follow_up_text: str) -> dict:
     )
     return json.loads(response.text)
 
-
-# ---------------------------------------------------------
 # 2. DIFF: old ranking vs. new ranking, tied to what actually changed
-# ---------------------------------------------------------
 def diff_expanded_requests(old_request: dict, new_request: dict) -> list[dict]:
     """
-    Field-by-field comparison, pure code -- no LLM. Only reports fields
-    whose VALUE actually changed (not fields that just moved from
-    "inferred" to "stated" with the same value, though that's noted
-    too), since that's what actually explains a ranking change.
+    Field-by-field comparison. Only reports fields
+    whose VALUE changed. Fields moved from inferred to states are 
+    noted explicitely as a reason of ranking change.
     """
     changes = []
     simple_fields = ["category", "niche", "location_city", "budget_max_inr", "deadline_or_date"]
@@ -147,7 +126,7 @@ def diff_expanded_requests(old_request: dict, new_request: dict) -> list[dict]:
 
 def diff_rankings(old_recommendations: list[dict], new_recommendations: list[dict]) -> dict:
     """
-    Compares two ranked top-2 lists by artist_id -- pure code, no LLM.
+    Compares two ranked top-2 lists by artist_id .
     Reports rank movement, new entrants, and dropped candidates, plus
     the score delta for anyone present in both, so "what changed" is
     always backed by an actual number, not a restated opinion.
@@ -188,10 +167,6 @@ def diff_rankings(old_recommendations: list[dict], new_recommendations: list[dic
     movements.sort(key=lambda m: (m["new_rank"] is None, m["new_rank"] or 999))
     return {"candidate_movements": movements}
 
-
-# ---------------------------------------------------------
-# 3. MAIN
-# ---------------------------------------------------------
 def process_follow_up(prior_recommendation_path: Path, follow_up_path: Path, conn) -> dict:
     with open(prior_recommendation_path, "r", encoding="utf-8") as f:
         prior_result = json.load(f)
@@ -275,12 +250,7 @@ if __name__ == "__main__":
 
     conn = sqlite3.connect(DB_PATH)
 
-    # Match each follow-up file to its prior recommendations.json by
-    # shared filename stem convention: a follow-up named
     # "01_cafe_music_update.txt" is matched to a prior recommendation
-    # whose conversation stem shares the same leading numeric/topic
-    # prefix (e.g. "01_cafe_music_whatsapp_recommendations.json").
-    # Confirmed real in this dataset: 01_cafe_music_update.txt pairs
     # with 01_cafe_music_whatsapp.txt's output.
     follow_up_files = sorted(FOLLOW_UP_DIR.glob("*.txt"))
     if not follow_up_files:
@@ -307,7 +277,7 @@ if __name__ == "__main__":
         prior_recommendation_path = matches[0]
         result = process_follow_up(prior_recommendation_path, follow_up_path, conn)
 
-        output_filename = follow_up_prefix + "_updated_recommendation.json"
+        output_filename = "update_recommendation.json"
         output_path = OUTPUT_DIR / output_filename
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(result, f, indent=2)
