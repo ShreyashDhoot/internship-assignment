@@ -99,10 +99,6 @@ OUTPUT_DIR = REPO_ROOT / "recommendations"
 # Must match FILENAME_PREFIX_TO_CATEGORY.values() in make-db.py exactly.
 VALID_CATEGORIES = {"musician", "video-editor", "photographer"}
 
-# Same small, stated location grouping used in make-db.py -- imported
-# by re-declaring here rather than importing across the two sibling
-# folders, to keep this script runnable standalone. Keep these two
-# lists in sync manually; see decision_note.md limitation note.
 NEARBY_CITY_GROUPS = {
     "delhi ncr": {"delhi", "new delhi", "gurgaon", "gurugram", "noida", "ghaziabad", "faridabad"},
 }
