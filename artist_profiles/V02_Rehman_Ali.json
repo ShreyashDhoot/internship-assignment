@@ -1,0 +1,188 @@
+{
+    "artist_id": "V02",
+    "name": "Rehman Ali",
+    "category": "video_editors",
+    "docx_stated_category": "Video Editor",
+    "location": "Gurugram",
+    "work_preference": "Remote",
+    "bio": "Video editor working on interview-led films, explainers and company videos.",
+    "portfolio": [
+        "OA_maker_profile_excerpt.mp4",
+        "OA_workplace_explainer.mp4"
+    ],
+    "artist_vibe_summary": "Rehman Ali focuses on interview-led films and company explainers, demonstrating an ability to structure thematic narratives around corporate milestones and team visions. However, his technical execution currently falls short of professional standards, frequently hampered by abrupt transitions, unpolished audio mixing, and inconsistent color continuity. While his motion graphics and conceptual framing show baseline competence, the overall editing lacks the refined pacing and polish required for high-end commercial delivery.",
+    "multimodal_questions": [
+        {
+            "question": "Are the transitions between clips smooth and purposeful?",
+            "media_type": "video",
+            "vibe_metric": "Transition Quality",
+            "question_type": "Standardized Benchmark",
+            "answer": "No, the transitions between clips are not smooth or purposeful. The transitions appear abrupt, with some frames showing white flashes or sudden cuts, which disrupts the narrative flow. The lack of a clear beat alignment score further suggests inconsistent pacing and poor transition planning."
+        },
+        {
+            "question": "Is the visual pacing matched effectively to the background audio/music?",
+            "media_type": "video",
+            "vibe_metric": "Audio-Visual Sync",
+            "question_type": "Standardized Benchmark",
+            "answer": "No"
+        },
+        {
+            "question": "Is the color grading consistent across different shots in the sequence?",
+            "media_type": "video",
+            "vibe_metric": "Color Continuity",
+            "question_type": "Standardized Benchmark",
+            "answer": "No"
+        },
+        {
+            "question": "Does the edit tell a clear narrative or maintain a cohesive theme?",
+            "media_type": "video",
+            "vibe_metric": "Narrative Flow",
+            "question_type": "Standardized Benchmark",
+            "answer": "Yes, the edit maintains a cohesive theme centered around the company's journey, team, and business philosophy, even if it doesn't follow a traditional narrative structure."
+        },
+        {
+            "question": "Are graphical overlays or text (if any) professionally integrated?",
+            "media_type": "video",
+            "vibe_metric": "Motion Graphics",
+            "question_type": "Standardized Benchmark",
+            "answer": "Yes, graphical overlays and text are professionally integrated. The text is cleanly placed, well-aligned with the visual content, and uses consistent fonts and styles. The overlays enhance the narrative without distracting from the visuals."
+        },
+        {
+            "question": "Does the video feature an interview-led film format with visible dialogue or spoken interviews?",
+            "media_type": "video",
+            "vibe_metric": "interview-led films",
+            "question_type": "Bio Verification",
+            "answer": "Yes"
+        },
+        {
+            "question": "Does the content include animated elements, motion graphics, or visual aids designed to explain a concept or product?",
+            "media_type": "video",
+            "vibe_metric": "explainers",
+            "question_type": "Bio Verification",
+            "answer": "Yes"
+        },
+        {
+            "question": "Does the editing style and tone align with professional corporate or company video standards?",
+            "media_type": "video",
+            "vibe_metric": "company videos",
+            "question_type": "Bio Verification",
+            "answer": "No. The editing style is inconsistent and lacks professional polish. The abrupt cuts, unaligned pacing, and use of stock footage or generic text overlays (e.g., \u201cAfter My Edit\u201d) suggest amateur or promotional work rather than polished corporate video standards."
+        },
+        {
+            "question": "Are the cuts, transitions, and pacing applied smoothly to maintain engagement throughout the narrative?",
+            "media_type": "video",
+            "vibe_metric": "editing proficiency",
+            "question_type": "Bio Verification",
+            "answer": "No. The cuts and transitions are abrupt and lack smooth pacing, which disrupts narrative flow and fails to maintain consistent engagement."
+        },
+        {
+            "question": "Is the audio mixing clear, balancing dialogue, background music, and sound effects effectively?",
+            "media_type": "video",
+            "vibe_metric": "post-production quality",
+            "question_type": "Bio Verification",
+            "answer": "No, the audio mixing is not clear. The video lacks any discernible background music or sound effects, and the dialogue appears to be the sole audio element. This creates an unbalanced and potentially distracting auditory experience, as the audio lacks the richness and layering typically found in professional editing. The absence of atmospheric elements or music could make the video feel flat or overly clinical, detracting from the intended emotional or narrative impact."
+        }
+    ],
+    "editing_signal_metrics": {
+        "total_videos_analyzed": 7,
+        "total_frame_budget": 40,
+        "average_shot_length_seconds": 5.52,
+        "pacing_style": "Balanced Commercial / Narrative",
+        "beat_sync_accuracy_percentage": null,
+        "per_video_frame_evidence": [
+            {
+                "file": "Video-70182.mp4",
+                "duration_seconds": 9.38,
+                "frame_budget_allocated": 4,
+                "frames_actually_sampled": 4,
+                "sampled_timestamps": [
+                    5.28,
+                    5.76,
+                    6.28,
+                    6.76
+                ]
+            },
+            {
+                "file": "Video-5523.mp4",
+                "duration_seconds": 229.42,
+                "frame_budget_allocated": 13,
+                "frames_actually_sampled": 12,
+                "sampled_timestamps": [
+                    1.79,
+                    2.29,
+                    2.79,
+                    3.29,
+                    118.25,
+                    118.75,
+                    119.25,
+                    119.75,
+                    225.17,
+                    225.67,
+                    226.17,
+                    226.67
+                ]
+            },
+            {
+                "file": "Video-9403.mp4",
+                "duration_seconds": 75.47,
+                "frame_budget_allocated": 5,
+                "frames_actually_sampled": 4,
+                "sampled_timestamps": [
+                    0.0,
+                    0.5,
+                    1.0,
+                    1.5
+                ]
+            },
+            {
+                "file": "Video-23970.mp4",
+                "duration_seconds": 16.57,
+                "frame_budget_allocated": 4,
+                "frames_actually_sampled": 4,
+                "sampled_timestamps": [
+                    0.0,
+                    0.5,
+                    1.0,
+                    1.5
+                ]
+            },
+            {
+                "file": "Video-41797.mp4",
+                "duration_seconds": 71.44,
+                "frame_budget_allocated": 5,
+                "frames_actually_sampled": 4,
+                "sampled_timestamps": [
+                    1.52,
+                    2.0,
+                    2.52,
+                    3.0
+                ]
+            },
+            {
+                "file": "Video-77734.mp4",
+                "duration_seconds": 32.33,
+                "frame_budget_allocated": 4,
+                "frames_actually_sampled": 4,
+                "sampled_timestamps": [
+                    0.0,
+                    0.47,
+                    0.97,
+                    1.47
+                ]
+            },
+            {
+                "file": "Video-75516.mp4",
+                "duration_seconds": 44.33,
+                "frame_budget_allocated": 4,
+                "frames_actually_sampled": 4,
+                "sampled_timestamps": [
+                    4.08,
+                    4.58,
+                    5.08,
+                    5.58
+                ]
+            }
+        ]
+    },
+    "unasked_artistic_evidence": "The video employs a dynamic mix of editing techniques. It uses quick cuts between studio interviews and factory scenes to contrast personal narratives with operational realities. The pacing is intentionally balanced, with slow, contemplative shots of founders followed by fast-paced factory footage. Color continuity is maintained through consistent branding (white polo shirts with \"decorpot\" logo) across different scenes. Motion graphics are integrated effectively, with text overlays like \"4 Founders. 1 Vision\" and \"One Dream Built Together\" serving as narrative anchors. The video also features a strong visual motif: the recurring use of black-and-white footage for factory scenes, creating a stark contrast with the color studio interviews and emphasizing the industrial backbone of the company. The editing also includes a subtle stylistic choice of using a \"before/after\" edit comparison to showcase the editor's skill, adding an element of self-promotion."
+}

@@ -1,0 +1,85 @@
+{
+    "artist_id": "V04",
+    "name": "Shivam",
+    "category": "video_editors",
+    "docx_stated_category": "Visual Artist",
+    "location": "Delhi, India",
+    "work_preference": "Not specified",
+    "bio": "Visual artist working in portrait photography, cinematography, videography and video editing.",
+    "portfolio": [
+        "Not provided in the profile."
+    ],
+    "artist_vibe_summary": "Shivam is a versatile visual artist based in Delhi, India, whose expertise spans portrait photography, cinematography, videography, and professional video editing. Operating with a multidimensional aesthetic, he demonstrates a strong capability to integrate captured moments and polished post-production into a cohesive visual style. His multidisciplinary approach highlights a refined technical foundation across both still and moving image mediums.",
+    "multimodal_questions": [
+        {
+            "question": "Are the transitions between clips smooth and purposeful?",
+            "media_type": "video",
+            "vibe_metric": "Transition Quality",
+            "question_type": "Standardized Benchmark",
+            "answer": ""
+        },
+        {
+            "question": "Is the visual pacing matched effectively to the background audio/music?",
+            "media_type": "video",
+            "vibe_metric": "Audio-Visual Sync",
+            "question_type": "Standardized Benchmark",
+            "answer": ""
+        },
+        {
+            "question": "Is the color grading consistent across different shots in the sequence?",
+            "media_type": "video",
+            "vibe_metric": "Color Continuity",
+            "question_type": "Standardized Benchmark",
+            "answer": ""
+        },
+        {
+            "question": "Does the edit tell a clear narrative or maintain a cohesive theme?",
+            "media_type": "video",
+            "vibe_metric": "Narrative Flow",
+            "question_type": "Standardized Benchmark",
+            "answer": ""
+        },
+        {
+            "question": "Are graphical overlays or text (if any) professionally integrated?",
+            "media_type": "video",
+            "vibe_metric": "Motion Graphics",
+            "question_type": "Standardized Benchmark",
+            "answer": ""
+        },
+        {
+            "question": "Does the visual content prominently feature portrait photography with professional lighting and composition?",
+            "media_type": "image",
+            "vibe_metric": "Portrait photography expertise",
+            "question_type": "Bio Verification",
+            "answer": ""
+        },
+        {
+            "question": "Does the footage demonstrate advanced cinematography techniques such as controlled depth of field, stable camera movement, and deliberate framing?",
+            "media_type": "video",
+            "vibe_metric": "Cinematography skill",
+            "question_type": "Bio Verification",
+            "answer": ""
+        },
+        {
+            "question": "Are there examples of videography that capture dynamic live events or narrative sequences effectively?",
+            "media_type": "video",
+            "vibe_metric": "Videography capability",
+            "question_type": "Bio Verification",
+            "answer": ""
+        },
+        {
+            "question": "Does the video editing showcase professional post-production work including seamless cuts, color grading, and pacing?",
+            "media_type": "video",
+            "vibe_metric": "Video editing proficiency",
+            "question_type": "Bio Verification",
+            "answer": ""
+        },
+        {
+            "question": "Does the portfolio successfully integrate portrait photography, cinematography, videography, and video editing into a cohesive visual style?",
+            "media_type": "video",
+            "vibe_metric": "Versatility as a visual artist",
+            "question_type": "Bio Verification",
+            "answer": ""
+        }
+    ]
+}

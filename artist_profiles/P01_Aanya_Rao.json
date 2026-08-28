@@ -1,0 +1,88 @@
+{
+    "artist_id": "P01",
+    "name": "Aanya Rao",
+    "category": "photographers",
+    "docx_stated_category": "Photographer",
+    "location": "Delhi / NCR",
+    "work_preference": "Travel available",
+    "bio": "Photographer working in events, caf\u00e9s, workshops, team days and small business photography.",
+    "portfolio": [
+        "Community literature evening",
+        "Co-working team day",
+        "Neighbourhood caf\u00e9 content"
+    ],
+    "artist_vibe_summary": "Aanya Rao\u2019s aesthetic signature is defined by a cinematic, high-contrast mastery of ambient and artificial lighting, utilizing atmospheric elements like string lights and deep chiaroscuro to craft moody, immersive narratives. Technically, she excels at producing sharply focused subjects and depth-driven compositions that transform urban nights, live events, and small business environments into visually rich vignettes. Her versatile portfolio demonstrates a strong professional capability for capturing dynamic live spaces and intimate commercial moments with a distinctive, emotive touch.",
+    "multimodal_questions": [
+        {
+            "question": "Are the primary subjects in the photographs sharply in focus?",
+            "media_type": "image",
+            "vibe_metric": "Focus & Sharpness",
+            "question_type": "Standardized Benchmark",
+            "answer": "Yes, the primary subjects in the photographs are sharply in focus."
+        },
+        {
+            "question": "Does the lighting feel natural, artificially staged, or poorly exposed?",
+            "media_type": "image",
+            "vibe_metric": "Lighting Quality",
+            "question_type": "Standardized Benchmark",
+            "answer": "The lighting across the portfolio is predominantly artificially staged, with intentional use of decorative string lights, neon signs, and stage effects to create atmospheric or energetic scenes. While some images capture ambient or natural nighttime lighting, the overall aesthetic is curated and enhanced for visual impact, not realism. Exposure is generally well-managed, with intentional contrast and color grading, but not all images are perfectly exposed \u2014 some show slight overexposure in highlights or underexposure in shadows \u2014 indicating a deliberate stylistic approach rather than natural conditions."
+        },
+        {
+            "question": "Do the images follow standard compositional rules like the rule of thirds?",
+            "media_type": "image",
+            "vibe_metric": "Composition",
+            "question_type": "Standardized Benchmark",
+            "answer": "No, the images do not consistently follow standard compositional rules like the rule of thirds. Many shots appear to prioritize capturing the scene or subject in a straightforward manner, with some images featuring centered or unbalanced compositions. The varied lighting, dynamic subjects, and event settings also contribute to a less rigid adherence to compositional principles."
+        },
+        {
+            "question": "Is the color grading heavily stylized, natural, or desaturated?",
+            "media_type": "image",
+            "vibe_metric": "Color Palette",
+            "question_type": "Standardized Benchmark",
+            "answer": "Heavily stylized"
+        },
+        {
+            "question": "Does the portfolio show consistency in style across different shots?",
+            "media_type": "image",
+            "vibe_metric": "Stylistic Consistency",
+            "question_type": "Standardized Benchmark",
+            "answer": "No, the portfolio does not show consistent style across different shots. The images vary significantly in photographic approach, lighting, composition, and subject matter\u2014ranging from intimate street scenes and cozy interiors to high-energy concert venues and elaborate fireworks displays\u2014indicating a diverse, rather than uniform, visual style."
+        },
+        {
+            "question": "Does the image capture a live event setting with multiple participants interacting organically?",
+            "media_type": "image",
+            "vibe_metric": "event photography capability",
+            "question_type": "Bio Verification",
+            "answer": "Yes."
+        },
+        {
+            "question": "Are food, beverages, and interior ambiance of a cafe setting clearly visible in the frame?",
+            "media_type": "image",
+            "vibe_metric": "cafe and lifestyle photography",
+            "question_type": "Bio Verification",
+            "answer": "No."
+        },
+        {
+            "question": "Does the image show people actively engaged in a learning session, demonstration, or interactive workshop?",
+            "media_type": "image",
+            "vibe_metric": "workshop coverage skill",
+            "question_type": "Bio Verification",
+            "answer": "No."
+        },
+        {
+            "question": "Does the photo depict corporate team members collaborating, working together, or participating in a team-building activity?",
+            "media_type": "image",
+            "vibe_metric": "team day and corporate photography",
+            "question_type": "Bio Verification",
+            "answer": "No."
+        },
+        {
+            "question": "Does the image showcase products, services, or brand environments tailored for small business marketing?",
+            "media_type": "image",
+            "vibe_metric": "small business commercial photography",
+            "question_type": "Bio Verification",
+            "answer": "Yes."
+        }
+    ],
+    "unasked_artistic_evidence": "The photographer\u2019s visual signature is defined by a masterful, high-contrast use of ambient and artificial light to create moody, immersive atmospheres. A recurring, sophisticated technique is the strategic use of string lights \u2014 whether cascading like a canopy or arranged in geometric patterns \u2014 to frame scenes, guide the eye, and infuse urban and live-event spaces with a warm, intimate glow against the darkness. Compositionally, the photographer excels at capturing depth and scale, often using leading lines (like alleyways or light strings) and layered perspectives (street-level to rooftop) to create dynamic, story-driven visuals. Lighting is consistently cinematic, with a preference for low-key, chiaroscuro effects that emphasize texture, form, and emotion, whether in the quiet intimacy of a caf\u00e9\u2019s interior or the electric chaos of a festival. The portfolio reveals a keen eye for detail \u2014 from the subtle reflections on car hoods to the intricate patterns of laser beams \u2014 and a consistent, emotive tone that transforms ordinary urban nights into evocative, visually rich narratives."
+}

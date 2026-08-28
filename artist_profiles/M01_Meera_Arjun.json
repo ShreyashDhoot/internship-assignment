@@ -1,0 +1,137 @@
+{
+    "artist_id": "M01",
+    "name": "Meera & Arjun",
+    "category": "musicians",
+    "docx_stated_category": "vocalist and Guitarist",
+    "location": "Delhi NCR, India",
+    "work_preference": "Onsite",
+    "bio": "Meera & Arjun is an acoustic duo based in Delhi NCR.",
+    "portfolio": [],
+    "artist_vibe_summary": "Meera & Arjun present a melancholic yet shifting sonic aesthetic characterized by inconsistent mixing balance, variable tempos, and recurrent audio clarity challenges such as distortion and background noise. Their evaluated performances reveal a raw, intimate studio or stage setup with fluctuating rhythmic intensity rather than a cohesive, polished acoustic duo presentation. Overall, the technical execution requires refinement to effectively capture their intended live vocal and instrumental dynamics.",
+    "multimodal_questions": [
+        {
+            "question": "Is the audio recording free from background hiss, clipping, or distortion?",
+            "media_type": "audio",
+            "vibe_metric": "Audio Clarity",
+            "question_type": "Standardized Benchmark",
+            "answer": "The first recording is plagued by heavy distortion and noise throughout. The second has noticeable hissing and distortion towards the end but begins clear and crisp. The third recording starts with white noise before descending into static. The fourth features a muffled sound at the beginning that improves to clear speech. Lastly, the fifth recording is mostly clear and distortion-free, maintaining a consistent level of quality."
+        },
+        {
+            "question": "Are the primary vocals or lead instruments well-balanced in the mix?",
+            "media_type": "audio",
+            "vibe_metric": "Mixing Balance",
+            "question_type": "Standardized Benchmark",
+            "answer": "The primary vocals are not clearly audible over the mix; it appears the instrumental is overpowering. The dynamic range seems limited as the soft parts are drowned out by the loud sections."
+        },
+        {
+            "question": "Does the performance maintain a consistent tempo and rhythm?",
+            "media_type": "audio",
+            "vibe_metric": "Rhythmic Consistency",
+            "question_type": "Standardized Benchmark",
+            "answer": "No, the performance has varying tempos and rhythms, with some segments being slow and others fast-paced."
+        },
+        {
+            "question": "Is the emotional tone of the performance energetic, melancholic, or neutral?",
+            "media_type": "audio",
+            "vibe_metric": "Emotional Tone",
+            "question_type": "Standardized Benchmark",
+            "answer": "The emotional tone appears to be primarily melancholic, with occasional moments that feel more energetic due to the up-tempo beats towards the end of some songs."
+        },
+        {
+            "question": "What is the primary genre and instrumentation of this track?",
+            "media_type": "audio",
+            "vibe_metric": "Genre Classification",
+            "question_type": "Standardized Benchmark",
+            "answer": "The primary genre of this track is rock nacional, featuring predominantly Brazilian rock elements with instruments such as the guitar, drums, and piano."
+        },
+        {
+            "question": "Can you hear two distinct musical performers in this audio?",
+            "media_type": "audio",
+            "vibe_metric": "acoustic duo verification",
+            "question_type": "Bio Verification",
+            "answer": "Yes, there are two distinct musical performers; one from the beginning to 10 seconds and another from 10 seconds to the end of the audio."
+        },
+        {
+            "question": "Is an acoustic guitar present and actively playing in the recording?",
+            "media_type": "audio",
+            "vibe_metric": "instrumentation verification",
+            "question_type": "Bio Verification",
+            "answer": "No, there is no acoustic guitar present; only sound equipment and effects unit are mentioned."
+        },
+        {
+            "question": "Does the performance feature live vocal delivery?",
+            "media_type": "audio",
+            "vibe_metric": "vocalist verification",
+            "question_type": "Bio Verification",
+            "answer": "Yes, some of the performances feature live vocal delivery."
+        },
+        {
+            "question": "Do the performers appear to be located in an urban setting typical of Delhi NCR?",
+            "media_type": "video",
+            "vibe_metric": "location alignment",
+            "question_type": "Bio Verification",
+            "answer": "No, the performers do not appear to be located in an urban setting typical of Delhi NCR. The video clips depict a dimly lit, intimate performance space with a black background, suggesting a stage or small venue rather than an urban environment. The presence of professional audio equipment like pedalboards and microphones, along with the focused, close-up shots of the musician, indicates a performance context rather than a public or street setting commonly associated with urban areas like Delhi NCR."
+        },
+        {
+            "question": "Does the visual presentation show a cohesive two-person musical setup?",
+            "media_type": "video",
+            "vibe_metric": "duo formation check",
+            "question_type": "Bio Verification",
+            "answer": "No, the visual presentation does not show a cohesive two-person musical setup; it focuses solely on a single musician performing with guitar and vocals, with no indication of a second performer or collaborative setup."
+        }
+    ],
+    "audio_signal_metrics": [
+        {
+            "duration_seconds": 20.8,
+            "estimated_bpm": 93.8,
+            "rhythmic_intensity": 1.05,
+            "is_instrumental_or_dense": false
+        },
+        {
+            "duration_seconds": 19.54,
+            "estimated_bpm": 110.3,
+            "rhythmic_intensity": 1.14,
+            "is_instrumental_or_dense": false
+        },
+        {
+            "duration_seconds": 29.95,
+            "estimated_bpm": 0.0,
+            "rhythmic_intensity": 0.34,
+            "is_instrumental_or_dense": false
+        },
+        {
+            "duration_seconds": 29.37,
+            "estimated_bpm": 0.0,
+            "rhythmic_intensity": 0.06,
+            "is_instrumental_or_dense": false
+        },
+        {
+            "duration_seconds": 20.74,
+            "estimated_bpm": 133.9,
+            "rhythmic_intensity": 1.23,
+            "is_instrumental_or_dense": false
+        },
+        {
+            "duration_seconds": 20.74,
+            "estimated_bpm": 125.0,
+            "rhythmic_intensity": 1.3,
+            "is_instrumental_or_dense": false
+        }
+    ],
+    "media_files_used": {
+        "audio_evidence_from": [
+            "35860-408654164.mp4",
+            "35868-408654193.mp4",
+            "MA_upbeat_medley_rehearsal.wav",
+            "MA_cafe_demo_take1.wav",
+            "35863-408654169.mp4",
+            "35865-408654178.mp4"
+        ],
+        "video_frame_evidence_from": [
+            "35860-408654164.mp4",
+            "35868-408654193.mp4",
+            "35863-408654169.mp4",
+            "35865-408654178.mp4"
+        ]
+    }
+}

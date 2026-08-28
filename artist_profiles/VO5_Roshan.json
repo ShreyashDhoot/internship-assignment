@@ -1,0 +1,189 @@
+{
+    "artist_id": "V03",
+    "name": "Roshan",
+    "category": "video_editors",
+    "docx_stated_category": "Video Creator",
+    "location": "Delhi NCR",
+    "work_preference": "Projects & Collaborations",
+    "bio": "Video creator working across cinematography, videography, video editing, sound design and direction.",
+    "portfolio": [],
+    "artist_vibe_summary": "Roshan's portfolio showcases an energetic, fast-paced montage style that experiments with thematic juxtaposition across a diverse array of subjects, from corporate events to gym and political footage. However, the work currently suffers from critical technical inconsistencies, including abrupt transitions, poor audio-visual synchronization, and mismatched color grading. To achieve professional industry standard, the execution requires greater technical polish, refined motion graphics integration, and a more cohesive narrative flow.",
+    "multimodal_questions": [
+        {
+            "question": "Are the transitions between clips smooth and purposeful?",
+            "media_type": "video",
+            "vibe_metric": "Transition Quality",
+            "question_type": "Standardized Benchmark",
+            "answer": "No, the transitions between clips are abrupt and lack smoothness, indicating a lack of intentional pacing or editing flow."
+        },
+        {
+            "question": "Is the visual pacing matched effectively to the background audio/music?",
+            "media_type": "video",
+            "vibe_metric": "Audio-Visual Sync",
+            "question_type": "Standardized Benchmark",
+            "answer": "No"
+        },
+        {
+            "question": "Is the color grading consistent across different shots in the sequence?",
+            "media_type": "video",
+            "vibe_metric": "Color Continuity",
+            "question_type": "Standardized Benchmark",
+            "answer": "No"
+        },
+        {
+            "question": "Does the edit tell a clear narrative or maintain a cohesive theme?",
+            "media_type": "video",
+            "vibe_metric": "Narrative Flow",
+            "question_type": "Standardized Benchmark",
+            "answer": "No, the edit does not tell a clear narrative or maintain a cohesive theme. The sequence is a fast-paced montage of disparate scenes: food truck events, video editing trials, Galaxy Unpacked promotions, car washing, a university event, fitness gym footage, and a political figure. There is no unifying narrative or thematic thread connecting these varied clips."
+        },
+        {
+            "question": "Are graphical overlays or text (if any) professionally integrated?",
+            "media_type": "video",
+            "vibe_metric": "Motion Graphics",
+            "question_type": "Standardized Benchmark",
+            "answer": "No, graphical overlays or text are not professionally integrated. They appear to be hastily added, with inconsistent styling, poor alignment, and abrupt transitions that disrupt the visual flow. The text is often poorly placed, lacks polish, and does not match the overall aesthetic of the video."
+        },
+        {
+            "question": "Does the video display advanced cinematography techniques such as intentional lighting, dynamic camera movement, and deliberate framing?",
+            "media_type": "video",
+            "vibe_metric": "cinematography",
+            "question_type": "Bio Verification",
+            "answer": "Yes."
+        },
+        {
+            "question": "Are there clear examples of high-quality videography capturing stable, well-composed shots of subjects in various environments?",
+            "media_type": "video",
+            "vibe_metric": "videography",
+            "question_type": "Bio Verification",
+            "answer": "No"
+        },
+        {
+            "question": "Does the editing showcase professional pacing, seamless transitions, color grading, and cohesive narrative assembly?",
+            "media_type": "video",
+            "vibe_metric": "video_editing",
+            "question_type": "Bio Verification",
+            "answer": "No. The editing lacks professional pacing, seamless transitions, color grading, and cohesive narrative assembly. The clips are disjointed, with abrupt cuts and inconsistent visual styles, indicating amateur work."
+        },
+        {
+            "question": "Can distinct elements of sound design, such as balanced audio levels, ambient soundscapes, and effective use of effects/music, be heard?",
+            "media_type": "audio",
+            "vibe_metric": "sound_design",
+            "question_type": "Bio Verification",
+            "answer": ""
+        },
+        {
+            "question": "Is there evidence of strong directorial vision, where the visual and auditory elements work together to convey a clear story or concept?",
+            "media_type": "video",
+            "vibe_metric": "direction",
+            "question_type": "Bio Verification",
+            "answer": "No."
+        }
+    ],
+    "editing_signal_metrics": {
+        "total_videos_analyzed": 8,
+        "total_frame_budget": 40,
+        "average_shot_length_seconds": 2.54,
+        "pacing_style": "Fast-paced / Rhythmic Montage",
+        "beat_sync_accuracy_percentage": null,
+        "per_video_frame_evidence": [
+            {
+                "file": "4323_Cafe_videography.mov",
+                "duration_seconds": 33.37,
+                "frame_budget_allocated": 4,
+                "frames_actually_sampled": 4,
+                "sampled_timestamps": [
+                    1.2,
+                    1.7,
+                    2.2,
+                    2.7
+                ]
+            },
+            {
+                "file": "4322_Music_Video.mov",
+                "duration_seconds": 33.27,
+                "frame_budget_allocated": 4,
+                "frames_actually_sampled": 4,
+                "sampled_timestamps": [
+                    0.77,
+                    1.23,
+                    1.74,
+                    2.24
+                ]
+            },
+            {
+                "file": "4331_EDITING_WORK.mp4",
+                "duration_seconds": 14.0,
+                "frame_budget_allocated": 4,
+                "frames_actually_sampled": 4,
+                "sampled_timestamps": [
+                    4.0,
+                    4.48,
+                    5.0,
+                    5.48
+                ]
+            },
+            {
+                "file": "4320_Samsung_Event_Videography.mp4",
+                "duration_seconds": 75.03,
+                "frame_budget_allocated": 7,
+                "frames_actually_sampled": 4,
+                "sampled_timestamps": [
+                    1.4,
+                    1.9,
+                    2.4,
+                    2.9
+                ]
+            },
+            {
+                "file": "4332_Mini_Vlog_edit.mov",
+                "duration_seconds": 74.93,
+                "frame_budget_allocated": 7,
+                "frames_actually_sampled": 4,
+                "sampled_timestamps": [
+                    0.76,
+                    1.24,
+                    1.72,
+                    2.24
+                ]
+            },
+            {
+                "file": "_Music_Events.mp4",
+                "duration_seconds": 69.0,
+                "frame_budget_allocated": 7,
+                "frames_actually_sampled": 4,
+                "sampled_timestamps": [
+                    0.97,
+                    1.44,
+                    1.94,
+                    2.44
+                ]
+            },
+            {
+                "file": "4321_Gym_Videography.mov",
+                "duration_seconds": 32.63,
+                "frame_budget_allocated": 4,
+                "frames_actually_sampled": 4,
+                "sampled_timestamps": [
+                    0.57,
+                    1.03,
+                    1.53,
+                    2.04
+                ]
+            },
+            {
+                "file": "4345_BTS_MODI_JI.mp4",
+                "duration_seconds": 26.43,
+                "frame_budget_allocated": 4,
+                "frames_actually_sampled": 4,
+                "sampled_timestamps": [
+                    0.0,
+                    0.47,
+                    0.97,
+                    1.47
+                ]
+            }
+        ]
+    },
+    "unasked_artistic_evidence": "The video exhibits a strong emphasis on visual contrast and thematic storytelling through abrupt, high-impact transitions. The editing style is characterized by rapid cuts between disparate scenes\u2014ranging from vibrant outdoor food truck setups to dimly lit indoor lounge scenes, to stark black-and-white gym footage and formal political settings. This creates a rhythmic montage effect, reinforcing the \"Fast-paced / Rhythmic Montage\" pacing style. Notably, there is a deliberate use of color continuity in the food truck and Galaxy Unpacked scenes, where consistent lighting and branding (purple balloons, purple signage) create a cohesive visual identity despite the scene changes. In contrast, the black-and-white gym sequences and the formal political footage serve as stylistic anchors, using monochrome to evoke a sense of rawness or gravity, respectively. Motion graphics are minimally integrated, appearing only as text overlays (e.g., \"SIMI,\" \"VO,\" \"it.\") that function as punchlines or thematic cues, enhancing the video\u2019s comedic or conceptual tone without overwhelming the visual narrative. The editing prioritizes emotional and thematic juxtaposition over smooth transitions, relying on visual and tonal contrast to drive engagement."
+}

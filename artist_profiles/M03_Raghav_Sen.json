@@ -1,0 +1,111 @@
+{
+    "artist_id": "M03",
+    "name": "Raghav Sen",
+    "category": "musicians",
+    "docx_stated_category": "Vocalist &  Guitarist",
+    "location": "Noida / Delhi NCR, Uttar Pradesh, India",
+    "work_preference": "Onsite",
+    "bio": "Raghav Sen is a solo singer and acoustic guitarist based in Noida.",
+    "portfolio": [],
+    "artist_vibe_summary": "Raghav Sen is a versatile solo vocalist and multi-instrumentalist whose work blends acoustic warmth with electronic and French pop sensibilities, anchored by a steady 4/4 rhythmic foundation. While his performances display the professional timing and harmonic structure necessary for live engagement, his recordings occasionally suffer from minor audio artifacts such as hissing and distortion. Despite technical inconsistencies in production, his foundational musicianship establishes a solid, adaptable capability for live performance venues.",
+    "multimodal_questions": [
+        {
+            "question": "Is the audio recording free from background hiss, clipping, or distortion?",
+            "media_type": "audio",
+            "vibe_metric": "Audio Clarity",
+            "question_type": "Standardized Benchmark",
+            "answer": "The audio recording is not entirely free from background noise; it exhibits some hissing, distortion, and possibly clipping towards the end of the track."
+        },
+        {
+            "question": "Are the primary vocals or lead instruments well-balanced in the mix?",
+            "media_type": "audio",
+            "vibe_metric": "Mixing Balance",
+            "question_type": "Standardized Benchmark",
+            "answer": "The provided information does not specify the balance between primary vocals and lead instruments in the mix."
+        },
+        {
+            "question": "Does the performance maintain a consistent tempo and rhythm?",
+            "media_type": "audio",
+            "vibe_metric": "Rhythmic Consistency",
+            "question_type": "Standardized Benchmark",
+            "answer": "Yes, the performances maintain a consistent tempo and rhythm throughout, with an average tempo of around 129 BPM and a 4/4 time signature."
+        },
+        {
+            "question": "Is the emotional tone of the performance energetic, melancholic, or neutral?",
+            "media_type": "audio",
+            "vibe_metric": "Emotional Tone",
+            "question_type": "Standardized Benchmark",
+            "answer": "The emotional tone appears to be mostly neutral, with occasional shifts towards melancholy as indicated by the usage of specific words like 'noir' and 'triste'."
+        },
+        {
+            "question": "What is the primary genre and instrumentation of this track?",
+            "media_type": "audio",
+            "vibe_metric": "Genre Classification",
+            "question_type": "Standardized Benchmark",
+            "answer": "The primary genre of this track is electronic with a French pop influence, featuring instruments such as the piano, guitar, and synth."
+        },
+        {
+            "question": "Does the audio feature a solo human vocalist performing without background vocal harmonies?",
+            "media_type": "audio",
+            "vibe_metric": "Verifies solo singing claim",
+            "question_type": "Bio Verification",
+            "answer": "Yes, the audio features a solo human vocalist who performs with no background vocal harmonies."
+        },
+        {
+            "question": "Is the instrumental accompaniment exclusively driven by an acoustic guitar?",
+            "media_type": "audio",
+            "vibe_metric": "Verifies acoustic guitarist claim",
+            "question_type": "Bio Verification",
+            "answer": "No, the instrumental accompaniment includes a piano in addition to the acoustic guitar."
+        },
+        {
+            "question": "Does the video show a single performer simultaneously singing and playing the guitar?",
+            "media_type": "video",
+            "vibe_metric": "Verifies solo performer setup",
+            "question_type": "Bio Verification",
+            "answer": "Skipped: No compatible media evidence available for this question type."
+        },
+        {
+            "question": "Can the performer be visually identified performing in a setting consistent with Noida or Delhi NCR?",
+            "media_type": "video",
+            "vibe_metric": "Verifies location context",
+            "question_type": "Bio Verification",
+            "answer": "Skipped: No compatible media evidence available for this question type."
+        },
+        {
+            "question": "Does the performance demonstrate professional proficiency suitable for onsite live employment?",
+            "media_type": "audio",
+            "vibe_metric": "Verifies employer readiness",
+            "question_type": "Bio Verification",
+            "answer": "Yes, the performance demonstrates professional proficiency suitable for onsite live employment as it consistently maintains a steady tempo with good rhythmic and harmonic structure throughout all three tracks."
+        }
+    ],
+    "audio_signal_metrics": [
+        {
+            "duration_seconds": 195.81,
+            "estimated_bpm": 104.2,
+            "rhythmic_intensity": 1.2,
+            "is_instrumental_or_dense": false
+        },
+        {
+            "duration_seconds": 205.95,
+            "estimated_bpm": 144.2,
+            "rhythmic_intensity": 1.54,
+            "is_instrumental_or_dense": true
+        },
+        {
+            "duration_seconds": 164.61,
+            "estimated_bpm": 156.2,
+            "rhythmic_intensity": 1.53,
+            "is_instrumental_or_dense": true
+        }
+    ],
+    "media_files_used": {
+        "audio_evidence_from": [
+            "folk_acoustic-summer-walk-152722.mp3",
+            "alanajordan-letting-go-342368.mp3",
+            "swantwirls-quotthe-shared-moonquot-french-male-vocals-ballad-slow-489373.mp3"
+        ],
+        "video_frame_evidence_from": []
+    }
+}

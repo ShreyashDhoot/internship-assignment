@@ -1,0 +1,84 @@
+{
+    "artist_id": "P04",
+    "name": "Frames",
+    "category": "photographers",
+    "docx_stated_category": "Photographer / Cinematographer",
+    "location": "Kolkata",
+    "work_preference": "Photography & Videography projects",
+    "bio": "Photographer and cinematographer working in architecture, product, fashion, portrait and event photography.",
+    "portfolio": [],
+    "artist_vibe_summary": "Frames is a versatile Kolkata-based photographer and cinematographer whose work demonstrates strong technical precision in focus, architectural lines, and compositional framing. Their aesthetic signature combines high-contrast, mood-driven lighting with heavily stylized, emotive color palettes and intentional motion capture. While exhibiting strong foundational skills in capturing architectural and atmospheric scenes, the portfolio features an eclectic mix of diverse subjects and varying stylistic approaches.",
+    "multimodal_questions": [
+        {
+            "question": "Are the primary subjects in the photographs sharply in focus?",
+            "media_type": "image",
+            "vibe_metric": "Focus & Sharpness",
+            "question_type": "Standardized Benchmark",
+            "answer": "Yes."
+        },
+        {
+            "question": "Does the lighting feel natural, artificially staged, or poorly exposed?",
+            "media_type": "image",
+            "vibe_metric": "Lighting Quality",
+            "question_type": "Standardized Benchmark",
+            "answer": "The lighting in the portfolio feels natural in most cases, with some scenes appearing artificially staged or poorly exposed."
+        },
+        {
+            "question": "Do the images follow standard compositional rules like the rule of thirds?",
+            "media_type": "image",
+            "vibe_metric": "Composition",
+            "question_type": "Standardized Benchmark",
+            "answer": "Yes, the images generally follow standard compositional rules such as the rule of thirds, with thoughtful placement of subjects, leading lines, and balanced framing to create visually engaging and harmonious compositions."
+        },
+        {
+            "question": "Is the color grading heavily stylized, natural, or desaturated?",
+            "media_type": "image",
+            "vibe_metric": "Color Palette",
+            "question_type": "Standardized Benchmark",
+            "answer": "Heavily stylized"
+        },
+        {
+            "question": "Does the portfolio show consistency in style across different shots?",
+            "media_type": "image",
+            "vibe_metric": "Stylistic Consistency",
+            "question_type": "Standardized Benchmark",
+            "answer": "No, the portfolio does not show consistency in style across different shots. The images vary significantly in subject matter, composition, color palette, and mood\u2014from vibrant cultural ceremonies and dramatic sky displays to serene architectural reflections and stark black-and-white street scenes."
+        },
+        {
+            "question": "Does this portfolio image display architectural elements such as buildings, interiors, or structural lines consistent with architectural photography?",
+            "media_type": "image",
+            "vibe_metric": "Architectural photography expertise",
+            "question_type": "Bio Verification",
+            "answer": "Yes"
+        },
+        {
+            "question": "Does the portfolio showcase studio or commercial product shots with precise lighting and clean staging suitable for commercial use?",
+            "media_type": "image",
+            "vibe_metric": "Product photography capability",
+            "question_type": "Bio Verification",
+            "answer": "No."
+        },
+        {
+            "question": "Are there examples of fashion photography featuring styled apparel, model posing, and editorial lighting aesthetics?",
+            "media_type": "image",
+            "vibe_metric": "Fashion photography skills",
+            "question_type": "Bio Verification",
+            "answer": "No."
+        },
+        {
+            "question": "Does the portfolio include close-up or environmental portraiture capturing subjects with professional lighting and focus?",
+            "media_type": "image",
+            "vibe_metric": "Portrait photography proficiency",
+            "question_type": "Bio Verification",
+            "answer": "No."
+        },
+        {
+            "question": "Do the video samples demonstrate dynamic cinematography techniques, event coverage flow, or structured visual storytelling?",
+            "media_type": "video",
+            "vibe_metric": "Cinematography and event video quality",
+            "question_type": "Bio Verification",
+            "answer": ""
+        }
+    ],
+    "unasked_artistic_evidence": "The photographer\u2019s visual signature is defined by a masterful synthesis of dynamic motion, atmospheric lighting, and layered composition, often using color and contrast to evoke emotion and narrative. Key artistic techniques include:\n\n- **High-contrast, mood-driven lighting**: Scenes are frequently illuminated by dramatic golden hour sunsets, twilight gradients, or stark, directional light that sculpts form and depth, creating a cinematic, almost painterly quality.\n- **Intentional motion capture**: Whether freezing water splashes, capturing the blur of running bulls, or rendering the suspended forms of parachutists, the photographer uses shutter speed and composition to emphasize energy and movement.\n- **Symbolic and surreal juxtapositions**: A sunflower floats in a river beneath a steel bridge; a bird perches amid blossoms against a temple dome; the grandeur of a cathedral is mirrored in a tranquil pond. These compositions create poetic, dreamlike contrasts between the mundane and the monumental.\n- **Color as narrative device**: Vibrant, saturated hues (like the red blossoms or the Indian tricolor parachutes) are used to draw focus and evoke cultural identity, while muted, desaturated tones (as in the black-and-white street scene or the foggy bridge) ground the viewer in realism or melancholy"
+}

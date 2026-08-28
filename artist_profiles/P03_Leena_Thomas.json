@@ -1,0 +1,84 @@
+{
+    "artist_id": "P03",
+    "name": "Leena Thomas",
+    "category": "photographers",
+    "docx_stated_category": "Photographer",
+    "location": "Noida",
+    "work_preference": "Travel available",
+    "bio": "Photographer working in architecture, interiors, hospitality and travel photography.",
+    "portfolio": [],
+    "artist_vibe_summary": "Leena Thomas is a versatile architectural and interiors photographer who pairs technical sharpness and strong geometric composition with a heavily stylized, cinematic color palette. Her work expertly navigates diverse environments\u2014from minimalist modern spaces to opulent hospitality venues\u2014utilizing dramatic lighting and intentional staging to evoke a strong sense of luxury and mood. Despite stylistic variations across her portfolio, her professional execution consistently transforms built spaces into rich, narrative-driven visual experiences.",
+    "multimodal_questions": [
+        {
+            "question": "Are the primary subjects in the photographs sharply in focus?",
+            "media_type": "image",
+            "vibe_metric": "Focus & Sharpness",
+            "question_type": "Standardized Benchmark",
+            "answer": "Yes."
+        },
+        {
+            "question": "Does the lighting feel natural, artificially staged, or poorly exposed?",
+            "media_type": "image",
+            "vibe_metric": "Lighting Quality",
+            "question_type": "Standardized Benchmark",
+            "answer": "Mixed. Some lighting appears natural (e.g., sunset in the first image, daylight in the office interiors), while others are artificially staged (e.g., dramatic chandeliers, dark rooms with accent lighting, or controlled indoor scenes). A few images show poor exposure or lighting balance (e.g., the dark hotel lobby, the dimly lit room with laptop). Overall, lighting varies significantly across the portfolio."
+        },
+        {
+            "question": "Do the images follow standard compositional rules like the rule of thirds?",
+            "media_type": "image",
+            "vibe_metric": "Composition",
+            "question_type": "Standardized Benchmark",
+            "answer": "Yes, the images generally follow standard compositional rules such as the rule of thirds, with thoughtful use of leading lines, symmetry, and framing to create visually balanced and engaging scenes."
+        },
+        {
+            "question": "Is the color grading heavily stylized, natural, or desaturated?",
+            "media_type": "image",
+            "vibe_metric": "Color Palette",
+            "question_type": "Standardized Benchmark",
+            "answer": "The color grading across the portfolio is predominantly heavily stylized, with intentional and dramatic use of lighting, contrast, and saturated hues to create specific moods\u2014ranging from luxurious and modern to warm and romantic. While some images retain a naturalistic tone, the overall aesthetic leans toward stylized presentation rather than natural or desaturated rendering."
+        },
+        {
+            "question": "Does the portfolio show consistency in style across different shots?",
+            "media_type": "image",
+            "vibe_metric": "Stylistic Consistency",
+            "question_type": "Standardized Benchmark",
+            "answer": "No, the portfolio does not show consistency in style across different shots. It features a wide range of architectural and interior design styles, from futuristic and minimalist to traditional and opulent, as well as varied lighting conditions and thematic elements."
+        },
+        {
+            "question": "Does this image feature architectural structures, showcasing structural lines, facades, or building exteriors?",
+            "media_type": "image",
+            "vibe_metric": "architectural photography capability",
+            "question_type": "Bio Verification",
+            "answer": "Yes."
+        },
+        {
+            "question": "Does this image depict interior spaces, highlighting room layouts, furniture arrangement, and interior design elements?",
+            "media_type": "image",
+            "vibe_metric": "interiors photography capability",
+            "question_type": "Bio Verification",
+            "answer": "Yes."
+        },
+        {
+            "question": "Does this image capture hospitality environments such as hotel rooms, restaurants, lobbies, or resort amenities?",
+            "media_type": "image",
+            "vibe_metric": "hospitality photography capability",
+            "question_type": "Bio Verification",
+            "answer": "Yes"
+        },
+        {
+            "question": "Does this image feature travel destinations, landscape views, cultural landmarks, or tourism settings from external locations?",
+            "media_type": "image",
+            "vibe_metric": "travel photography capability",
+            "question_type": "Bio Verification",
+            "answer": "No."
+        },
+        {
+            "question": "Does the lighting and composition in the photo demonstrate professional interior or architectural staging techniques?",
+            "media_type": "image",
+            "vibe_metric": "professional staging and lighting quality",
+            "question_type": "Bio Verification",
+            "answer": "Yes."
+        }
+    ],
+    "unasked_artistic_evidence": "The photographer\u2019s visual signature is defined by a masterful synthesis of high-contrast lighting, architectural precision, and narrative storytelling. A consistent use of dramatic chiaroscuro\u2014whether in the deep shadows of a hotel lobby or the luminous glow of a modern home\u2019s interior\u2014creates an atmosphere of elegance and mystery. Compositionally, the artist favors strong geometric framing, often leveraging architectural lines and symmetry to guide the viewer\u2019s eye, while also incorporating organic elements like foliage or flowing fabric to introduce softness and movement. A recurring motif is the interplay between the built environment and nature, whether through a pool reflecting a sky, palm trees framing a groom, or lush gardens contrasting with minimalist interiors. The technical skill lies in the seamless integration of lighting to enhance texture, depth, and mood\u2014whether using backlighting to silhouette figures, or ambient illumination to reveal the contours of luxury materials. The portfolio consistently elevates everyday scenes into cinematic moments, suggesting a keen eye for detail and a deliberate, almost painterly, approach to capturing emotion and space."
+}

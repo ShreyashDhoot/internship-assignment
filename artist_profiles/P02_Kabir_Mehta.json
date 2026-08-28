@@ -1,0 +1,84 @@
+{
+    "artist_id": "P02",
+    "name": "Kabir Mehta",
+    "category": "photographers",
+    "docx_stated_category": "Photographer",
+    "location": "Gurugram",
+    "work_preference": "Commercial projects",
+    "bio": "Photographer working in product, food, fashion and portrait photography.",
+    "portfolio": [],
+    "artist_vibe_summary": "Kabir Mehta is a versatile commercial photographer based in Gurugram, whose aesthetic signature is defined by highly controlled, dramatic lighting and bold, stylized color palettes. His technical strengths lie in executing razor-sharp, meticulously staged product shots and striking fashion portraits that convey luxury and modernity. Demonstrating strong commercial readiness, Kabir delivers polished, high-contrast imagery ideally suited for high-end brand campaigns and professional marketing.",
+    "multimodal_questions": [
+        {
+            "question": "Are the primary subjects in the photographs sharply in focus?",
+            "media_type": "image",
+            "vibe_metric": "Focus & Sharpness",
+            "question_type": "Standardized Benchmark",
+            "answer": "Yes, the primary subjects in all the photographs are sharply in focus."
+        },
+        {
+            "question": "Does the lighting feel natural, artificially staged, or poorly exposed?",
+            "media_type": "image",
+            "vibe_metric": "Lighting Quality",
+            "question_type": "Standardized Benchmark",
+            "answer": "Artificially staged."
+        },
+        {
+            "question": "Do the images follow standard compositional rules like the rule of thirds?",
+            "media_type": "image",
+            "vibe_metric": "Composition",
+            "question_type": "Standardized Benchmark",
+            "answer": "No, the images do not consistently follow standard compositional rules like the rule of thirds. Several images exhibit flat, centered, or overly symmetrical arrangements that deviate from dynamic, balanced compositions. The product shots often prioritize product clarity over compositional harmony, while the fashion and portrait images show varied approaches, including low-angle shots and dramatic lighting, but lack a uniform adherence to compositional principles."
+        },
+        {
+            "question": "Is the color grading heavily stylized, natural, or desaturated?",
+            "media_type": "image",
+            "vibe_metric": "Color Palette",
+            "question_type": "Standardized Benchmark",
+            "answer": "Stylized"
+        },
+        {
+            "question": "Does the portfolio show consistency in style across different shots?",
+            "media_type": "image",
+            "vibe_metric": "Stylistic Consistency",
+            "question_type": "Standardized Benchmark",
+            "answer": "No, the portfolio does not show consistent style across different shots. It features a mix of high-contrast, minimalist fashion photography, vibrant product-focused advertising with thematic backdrops (e.g., oranges, water), and behind-the-scenes studio imagery, indicating varied stylistic approaches."
+        },
+        {
+            "question": "Does the visual content demonstrate professional product photography with well-lit commercial items and clean backgrounds?",
+            "media_type": "image",
+            "vibe_metric": "product photography expertise",
+            "question_type": "Bio Verification",
+            "answer": "Yes. The visual content demonstrates professional product photography with well-lit commercial items and clean backgrounds, as evidenced by the polished presentation of skincare products with controlled lighting and minimalist settings, and the high-quality fashion portraits featuring intentional lighting, composition, and studio environments."
+        },
+        {
+            "question": "Are there examples of food photography that showcase appetizing styling, proper lighting, and high-resolution culinary details?",
+            "media_type": "image",
+            "vibe_metric": "food photography capability",
+            "question_type": "Bio Verification",
+            "answer": "No. None of the provided images depict food photography. All images are either fashion portraits or product photography for skincare, with no culinary subjects or food styling presented."
+        },
+        {
+            "question": "Does the portfolio include fashion photography featuring model posing, stylish wardrobe, and dynamic editorial lighting?",
+            "media_type": "image",
+            "vibe_metric": "fashion photography skill",
+            "question_type": "Bio Verification",
+            "answer": "Yes."
+        },
+        {
+            "question": "Are there portraits present that exhibit strong facial lighting, sharp focus, and compelling subject expression?",
+            "media_type": "image",
+            "vibe_metric": "portrait photography quality",
+            "question_type": "Bio Verification",
+            "answer": "Yes."
+        },
+        {
+            "question": "Does the overall body of work reflect a cohesive commercial aesthetic suitable for professional marketing and brand campaigns?",
+            "media_type": "image",
+            "vibe_metric": "commercial readiness",
+            "question_type": "Bio Verification",
+            "answer": "Yes. The portfolio demonstrates a cohesive commercial aesthetic suitable for professional marketing and brand campaigns, characterized by consistent use of bold color palettes (e.g., deep reds, vibrant oranges), high-contrast lighting, and a unified visual language across both product photography and fashion imagery. The styling, composition, and mood are deliberately curated to convey luxury, modernity, and efficacy, aligning with high-end brand positioning."
+        }
+    ],
+    "unasked_artistic_evidence": "The photographer\u2019s visual signature is defined by a masterful, highly stylized approach to commercial and portrait photography, characterized by deliberate and evocative use of lighting, color, and composition to create emotionally resonant and visually striking imagery.\n\nKey artistic techniques and visual strengths include:\n\n- **Highly Controlled, Dramatic Lighting**: The portfolio consistently employs sophisticated lighting setups \u2014 from deep, directional chiaroscuro (as in the plaid jacket portrait) to soft, diffused studio lighting (as in the red coat shoot) and even dramatic backlighting with smoke effects \u2014 to sculpt form, create mood, and emphasize texture, rather than simply illuminating subjects.\n\n- **Strategic Color Palette & Mood**: A strong, intentional use of color is evident. The portfolio features bold, saturated palettes (vibrant oranges for the DOT&KEY serum, rich burgundies for the \u201cYour Product\u201d cream) that are not just decorative but function to evoke specific emotional responses \u2014 energy, luxury, or vitality \u2014 and are often used to create powerful visual contrast.\n\n- **Dynamic, Unconventional Composition**: The photographer favors low-angle perspectives (e.g., the man between towering buildings) and dynamic, off-center framing to create a sense of scale, tension, or intimacy. The"
+}

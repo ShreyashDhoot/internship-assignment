@@ -1,0 +1,188 @@
+{
+    "artist_id": "V01",
+    "name": "Nisha Kapoor",
+    "category": "video_editors",
+    "docx_stated_category": "Video Editor",
+    "location": "Delhi NCR",
+    "work_preference": "Remote",
+    "bio": "Video editor creating short-form social videos, food videos, event recaps and creator content.",
+    "portfolio": [
+        "NK_food_reel_v3.mp4",
+        "NK_event_recap_cut.mp4"
+    ],
+    "artist_vibe_summary": "Nisha Kapoor specializes in fast-paced short-form social videos, food reels, and event recaps tailored for vertical platforms. Her work utilizes high-energy rhythmic montages with rapid cuts and dynamic visual variety to immediately capture audience attention. However, her edits currently lack professional polish, displaying inconsistent color grading, disjointed narrative flow, and a lack of precise audio-visual synchronization.",
+    "multimodal_questions": [
+        {
+            "question": "Are the transitions between clips smooth and purposeful?",
+            "media_type": "video",
+            "vibe_metric": "Transition Quality",
+            "question_type": "Standardized Benchmark",
+            "answer": "No"
+        },
+        {
+            "question": "Is the visual pacing matched effectively to the background audio/music?",
+            "media_type": "video",
+            "vibe_metric": "Audio-Visual Sync",
+            "question_type": "Standardized Benchmark",
+            "answer": "No, the visual pacing is not matched effectively to the background audio/music."
+        },
+        {
+            "question": "Is the color grading consistent across different shots in the sequence?",
+            "media_type": "video",
+            "vibe_metric": "Color Continuity",
+            "question_type": "Standardized Benchmark",
+            "answer": "No, the color grading is inconsistent across different shots in the sequence."
+        },
+        {
+            "question": "Does the edit tell a clear narrative or maintain a cohesive theme?",
+            "media_type": "video",
+            "vibe_metric": "Narrative Flow",
+            "question_type": "Standardized Benchmark",
+            "answer": "No, the edit does not tell a clear narrative or maintain a cohesive theme. The rapid, rhythmic montage of disparate scenes \u2014 from cooking, to performances, to conferences, to cocktail preparation \u2014 lacks a unifying thread or progression. The lack of a clear beat alignment further indicates a disjointed, thematic chaos rather than a structured narrative."
+        },
+        {
+            "question": "Are graphical overlays or text (if any) professionally integrated?",
+            "media_type": "video",
+            "vibe_metric": "Motion Graphics",
+            "question_type": "Standardized Benchmark",
+            "answer": "No"
+        },
+        {
+            "question": "Does the video NK_food_reel_v3.mp4 display appetizing close-up shots of food preparation or dishes typical of food content creation?",
+            "media_type": "video",
+            "vibe_metric": "Food video editing capability",
+            "question_type": "Bio Verification",
+            "answer": "Yes"
+        },
+        {
+            "question": "Are fast-paced cuts and engaging visual pacing utilized in NK_food_reel_v3.mp4 suitable for short-form social media platforms?",
+            "media_type": "video",
+            "vibe_metric": "Short-form social video optimization",
+            "question_type": "Bio Verification",
+            "answer": "Yes, the fast-paced cuts and rhythmic montage style are suitable for short-form social media platforms, as they create a dynamic and engaging visual experience that aligns with the platform's audience preferences."
+        },
+        {
+            "question": "Does the video NK_event_recap_cut.mp4 feature dynamic footage of live gatherings, crowds, or celebratory moments indicative of an event recap?",
+            "media_type": "video",
+            "vibe_metric": "Event recap editing skills",
+            "question_type": "Bio Verification",
+            "answer": "Yes"
+        },
+        {
+            "question": "Does the editing style in the portfolio reflect current trends in creator content and vertical short-form formats?",
+            "media_type": "video",
+            "vibe_metric": "Creator content expertise",
+            "question_type": "Bio Verification",
+            "answer": "Yes, the editing style reflects current trends in creator content and vertical short-form formats. The fast-paced, rhythmic montage with quick cuts (average shot length of 1.44s) and dynamic transitions aligns with the high-energy, visually engaging formats popular on platforms like TikTok and Instagram Reels. The inclusion of diverse content\u2014from cooking and performances to events and branding\u2014caters to the broad, vertical-scrolling consumption habits of modern audiences. The use of black-and-white and high-contrast visuals also suggests an intentional aesthetic that emphasizes mood and impact, a common technique in short-form content to capture attention quickly."
+        },
+        {
+            "question": "Are clean transitions, color grading, and text overlays consistently applied across both portfolio samples to demonstrate professional polish?",
+            "media_type": "video",
+            "vibe_metric": "Overall video editing proficiency",
+            "question_type": "Bio Verification",
+            "answer": "No, the transitions, color grading, and text overlays are not consistently applied across both samples, indicating a lack of professional polish."
+        }
+    ],
+    "editing_signal_metrics": {
+        "total_videos_analyzed": 7,
+        "total_frame_budget": 40,
+        "average_shot_length_seconds": 1.44,
+        "pacing_style": "Fast-paced / Rhythmic Montage",
+        "beat_sync_accuracy_percentage": null,
+        "per_video_frame_evidence": [
+            {
+                "file": "Video-69962.mp4",
+                "duration_seconds": 22.17,
+                "frame_budget_allocated": 4,
+                "frames_actually_sampled": 4,
+                "sampled_timestamps": [
+                    0.3,
+                    0.8,
+                    1.3,
+                    1.8
+                ]
+            },
+            {
+                "file": "Video-43513.mp4",
+                "duration_seconds": 13.32,
+                "frame_budget_allocated": 4,
+                "frames_actually_sampled": 4,
+                "sampled_timestamps": [
+                    1.24,
+                    1.72,
+                    2.24,
+                    2.72
+                ]
+            },
+            {
+                "file": "Video-1382.mp4",
+                "duration_seconds": 72.5,
+                "frame_budget_allocated": 9,
+                "frames_actually_sampled": 8,
+                "sampled_timestamps": [
+                    1.3,
+                    1.8,
+                    2.3,
+                    2.8,
+                    67.07,
+                    67.57,
+                    68.07,
+                    68.57
+                ]
+            },
+            {
+                "file": "Video-82861.mp4",
+                "duration_seconds": 68.6,
+                "frame_budget_allocated": 8,
+                "frames_actually_sampled": 8,
+                "sampled_timestamps": [
+                    0.87,
+                    1.37,
+                    1.87,
+                    2.37,
+                    65.57,
+                    66.07,
+                    66.57,
+                    67.07
+                ]
+            },
+            {
+                "file": "Video-84802.mp4",
+                "duration_seconds": 8.23,
+                "frame_budget_allocated": 4,
+                "frames_actually_sampled": 4,
+                "sampled_timestamps": [
+                    0.0,
+                    0.5,
+                    1.0,
+                    1.5
+                ]
+            },
+            {
+                "file": "Video-42290.mp4",
+                "duration_seconds": 45.8,
+                "frame_budget_allocated": 6,
+                "frames_actually_sampled": 4,
+                "sampled_timestamps": [
+                    0.72,
+                    1.2,
+                    1.72,
+                    2.2
+                ]
+            },
+            {
+                "file": "Video-11391.mp4",
+                "duration_seconds": 35.62,
+                "frame_budget_allocated": 5,
+                "frames_actually_sampled": 4,
+                "sampled_timestamps": [
+                    0.0,
+                    0.5,
+                    1.0,
+                    1.5
+                ]
+            }
+        ]
+    },
+    "unasked_artistic_evidence": "The video employs a rapid, rhythmic montage style with minimal beat alignment, creating a dynamic, high-energy feel. Notable editing techniques include abrupt cuts between diverse scenes (cooking, event gatherings, stage performances, and cocktail preparation), which emphasize variety and movement. There is no consistent color continuity across scenes, as the video shifts between warm, cinematic kitchen lighting, stark black-and-white event footage, and vibrant red-lit audience shots. Motion graphics are integrated via the logo reveal (India\u2019s VKC Global) and the \"Loading\" screen, serving as transitional or branding elements. The editing prioritizes visual impact over narrative flow, using fast pacing to maintain viewer engagement across disparate content."
+}

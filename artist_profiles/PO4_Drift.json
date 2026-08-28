@@ -1,0 +1,84 @@
+{
+    "artist_id": "V05",
+    "name": "Drift",
+    "category": "photographers",
+    "docx_stated_category": "Photographer",
+    "location": "Ghaziabad, Uttar Pradesh",
+    "work_preference": "Freelance / Collaborations",
+    "bio": "Photographer working in portrait, event, travel and nature photography.",
+    "portfolio": [],
+    "artist_vibe_summary": "Drift's photography presents an atmospheric and painterly aesthetic defined by high-contrast silhouettes, dramatic natural lighting, and heavily stylized color palettes that prioritize mood over strict technical realism. While the portfolio demonstrates a strong conceptual eye for travel landscapes and framing through natural elements, inconsistent sharpness and variable compositional styles reveal a developing technical foundation. Overall, Drift captures evocative, emotionally resonant environmental views well-suited for artistic exploration rather than rigid commercial assignments.",
+    "multimodal_questions": [
+        {
+            "question": "Are the primary subjects in the photographs sharply in focus?",
+            "media_type": "image",
+            "vibe_metric": "Focus & Sharpness",
+            "question_type": "Standardized Benchmark",
+            "answer": "No."
+        },
+        {
+            "question": "Does the lighting feel natural, artificially staged, or poorly exposed?",
+            "media_type": "image",
+            "vibe_metric": "Lighting Quality",
+            "question_type": "Standardized Benchmark",
+            "answer": "The lighting in the portfolio feels natural, with each image capturing authentic environmental conditions\u2014sunset glow, midday sun, overcast skies, and mountainous twilight\u2014without signs of artificial staging or poor exposure."
+        },
+        {
+            "question": "Do the images follow standard compositional rules like the rule of thirds?",
+            "media_type": "image",
+            "vibe_metric": "Composition",
+            "question_type": "Standardized Benchmark",
+            "answer": "No."
+        },
+        {
+            "question": "Is the color grading heavily stylized, natural, or desaturated?",
+            "media_type": "image",
+            "vibe_metric": "Color Palette",
+            "question_type": "Standardized Benchmark",
+            "answer": "Heavily stylized"
+        },
+        {
+            "question": "Does the portfolio show consistency in style across different shots?",
+            "media_type": "image",
+            "vibe_metric": "Stylistic Consistency",
+            "question_type": "Standardized Benchmark",
+            "answer": "No, the portfolio does not show consistent style across different shots. The images vary significantly in color grading, lighting, and mood\u2014ranging from warm, silhouetted sunset scenes to cool, moody monochrome and vibrant, daylight compositions\u2014indicating a lack of stylistic uniformity."
+        },
+        {
+            "question": "Does the image showcase subjects in close-up or environmental portrait settings with clear facial features and lighting?",
+            "media_type": "image",
+            "vibe_metric": "portrait photography capability",
+            "question_type": "Bio Verification",
+            "answer": "No. The images showcase environmental portrait settings, but do not feature clear facial features or detailed lighting on individuals. Instead, they emphasize landscapes, architecture, and natural elements with silhouettes or atmospheric conditions."
+        },
+        {
+            "question": "Does the photo depict dynamic event scenes such as gatherings, performances, or candid human interactions?",
+            "media_type": "image",
+            "vibe_metric": "event photography capability",
+            "question_type": "Bio Verification",
+            "answer": "No."
+        },
+        {
+            "question": "Does the image feature iconic landscapes, foreign destinations, or outdoor travel elements?",
+            "media_type": "image",
+            "vibe_metric": "travel photography capability",
+            "question_type": "Bio Verification",
+            "answer": "Yes, the images feature iconic landscapes and outdoor travel elements."
+        },
+        {
+            "question": "Does the visual capture natural subjects such as wildlife, plants, or macro details outdoors?",
+            "media_type": "image",
+            "vibe_metric": "nature photography capability",
+            "question_type": "Bio Verification",
+            "answer": "No."
+        },
+        {
+            "question": "Is the overall composition, sharpness, and color grading of a professional quality suitable for commercial or freelance use?",
+            "media_type": "image",
+            "vibe_metric": "technical proficiency and employability",
+            "question_type": "Bio Verification",
+            "answer": "No. The images show inconsistent composition, variable sharpness, and uneven color grading\u2014hallmarks of amateur or semi-professional work\u2014making them unsuitable for commercial or freelance use."
+        }
+    ],
+    "unasked_artistic_evidence": "The photographer\u2019s visual signature is defined by a deliberate, moody aesthetic that prioritizes atmospheric tension and symbolic depth over literal realism. Key artistic techniques include: a consistent use of high-contrast silhouettes against dramatic skies to create graphic, almost painterly compositions; a pronounced color grading strategy that favors saturated, unnatural palettes (like the pervasive orange in the first image) and desaturated, moody tones (as in the third image) to evoke specific moods; and a strong compositional reliance on natural elements\u2014tree branches, water reflections, and mountainous terrain\u2014as framing devices that guide the viewer\u2019s eye and enhance narrative ambiguity. The work exhibits a technical mastery in manipulating light, particularly backlighting and diffuse illumination, to sculpt form and mood, while the recurring use of reflection and silhouette creates a layered, dreamlike quality that transcends simple documentation."
+}

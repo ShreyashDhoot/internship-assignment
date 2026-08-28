@@ -1,0 +1,131 @@
+{
+    "artist_id": "M04",
+    "name": "KillRush",
+    "category": "musicians",
+    "docx_stated_category": "Vocals & Guitars",
+    "location": "Noida / Delhi NCR, Uttar Pradesh, India",
+    "work_preference": "Onsite",
+    "bio": "Kill Rush is a live acoustic band based in Noida / Delhi NCR",
+    "portfolio": [],
+    "artist_vibe_summary": "KillRush is an energetic live acoustic and rock band delivering dynamic performances with guitar and drums. Their sound features raw, authentic live vocal delivery and variable tempos ranging from melodic mid-tempo grooves to fast-paced intensity. While their recordings display minor background noise and distortion typical of live settings, the ensemble consistently projects a passionate and engaging musical identity.",
+    "multimodal_questions": [
+        {
+            "question": "Is the audio recording free from background hiss, clipping, or distortion?",
+            "media_type": "audio",
+            "vibe_metric": "Audio Clarity",
+            "question_type": "Standardized Benchmark",
+            "answer": "The audio recording is not entirely free from background noise; it exhibits some distortion, particularly noticeable during the transition between tracks."
+        },
+        {
+            "question": "Are the primary vocals or lead instruments well-balanced in the mix?",
+            "media_type": "audio",
+            "vibe_metric": "Mixing Balance",
+            "question_type": "Standardized Benchmark",
+            "answer": "The provided information does not specify the balance between primary vocals and lead instruments in the mix."
+        },
+        {
+            "question": "Does the performance maintain a consistent tempo and rhythm?",
+            "media_type": "audio",
+            "vibe_metric": "Rhythmic Consistency",
+            "question_type": "Standardized Benchmark",
+            "answer": "The first track has a consistent tempo of around 85 BPM, but the following tracks vary in tempo, with some being faster-paced like track 5 at 117.2 BPM and others slower like track 2 at 62.5 BPM."
+        },
+        {
+            "question": "Is the emotional tone of the performance energetic, melancholic, or neutral?",
+            "media_type": "audio",
+            "vibe_metric": "Emotional Tone",
+            "question_type": "Standardized Benchmark",
+            "answer": "The emotional tone appears to be mostly energetic and intense, with occasional shifts to melancholy based on the tempo changes and the presence of sad words like 'pyar' which means 'love' in Hindi."
+        },
+        {
+            "question": "What is the primary genre and instrumentation of this track?",
+            "media_type": "audio",
+            "vibe_metric": "Genre Classification",
+            "question_type": "Standardized Benchmark",
+            "answer": "The primary genre of this track is rock, featuring guitar and drums."
+        },
+        {
+            "question": "Can you hear live acoustic instruments such as acoustic guitars being played in the audio recording?",
+            "media_type": "audio",
+            "vibe_metric": "acoustic instrumentation",
+            "question_type": "Bio Verification",
+            "answer": "Yes, there is an indication of live music with ambient sounds that include an acoustic guitar, suggesting a possible acoustic performance."
+        },
+        {
+            "question": "Does the performance feature live vocal delivery typical of a band performance?",
+            "media_type": "audio",
+            "vibe_metric": "live vocal performance",
+            "question_type": "Bio Verification",
+            "answer": "Yes, all performances feature live vocal delivery, typical of a band performance."
+        },
+        {
+            "question": "Does the video show multiple band members performing together as a live acoustic band?",
+            "media_type": "video",
+            "vibe_metric": "band setup",
+            "question_type": "Bio Verification",
+            "answer": "Yes, the video shows multiple band members performing together as a live acoustic band."
+        },
+        {
+            "question": "Are the performers in the video located in an urban setting or venue recognizable as Noida or the Delhi NCR region?",
+            "media_type": "video",
+            "vibe_metric": "regional context",
+            "question_type": "Bio Verification",
+            "answer": "No, the performers are not located in an urban setting or venue recognizable as Noida or the Delhi NCR region."
+        },
+        {
+            "question": "Is the audio quality indicative of a live performance setting rather than a heavily produced studio track?",
+            "media_type": "audio",
+            "vibe_metric": "live sound quality",
+            "question_type": "Bio Verification",
+            "answer": "The audio quality suggests it could be either, but the presence of background noise and varying pitches might indicate a live performance."
+        }
+    ],
+    "audio_signal_metrics": [
+        {
+            "duration_seconds": 84.74,
+            "estimated_bpm": 85.2,
+            "rhythmic_intensity": 1.62,
+            "is_instrumental_or_dense": true
+        },
+        {
+            "duration_seconds": 93.41,
+            "estimated_bpm": 85.2,
+            "rhythmic_intensity": 1.73,
+            "is_instrumental_or_dense": true
+        },
+        {
+            "duration_seconds": 67.17,
+            "estimated_bpm": 62.5,
+            "rhythmic_intensity": 1.43,
+            "is_instrumental_or_dense": false
+        },
+        {
+            "duration_seconds": 55.07,
+            "estimated_bpm": 117.2,
+            "rhythmic_intensity": 1.91,
+            "is_instrumental_or_dense": true
+        },
+        {
+            "duration_seconds": 82.82,
+            "estimated_bpm": 133.9,
+            "rhythmic_intensity": 1.59,
+            "is_instrumental_or_dense": true
+        }
+    ],
+    "media_files_used": {
+        "audio_evidence_from": [
+            "VID_20260820_215432_704.mp4",
+            "VID_20260820_215633_211.mp4",
+            "VID_20260820_215739_384.mp4",
+            "VID_20260820_215053_667.mp4",
+            "VID_20260820_214956_321.mp4"
+        ],
+        "video_frame_evidence_from": [
+            "VID_20260820_215432_704.mp4",
+            "VID_20260820_215633_211.mp4",
+            "VID_20260820_215739_384.mp4",
+            "VID_20260820_215053_667.mp4",
+            "VID_20260820_214956_321.mp4"
+        ]
+    }
+}
