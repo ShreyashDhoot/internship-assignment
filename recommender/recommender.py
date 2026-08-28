@@ -9,16 +9,33 @@ JSON per conversation. Pipeline, matching what we designed:
      confirmed all three formats appear in the real dataset) and produce
      a structured "expanded request" object. Category and other
      enumerable fields are constrained to fixed vocab; free-text fields
-     stay free text. Every field is tagged stated/assumed/unknown so
-     later stages (relaxation, refinement questions) can reason about
-     WHY a field has the value it has.
+     stay free text. Every field is tagged stated/inferred/unknown so
+     later stages (relaxation) can reason about WHY a field has the
+     value it has.
 
-  2. DETERMINISTIC SQL SEARCH (no LLM): query artists.db on the
-     structured fields only -- category as a hard filter (never
-     relaxed), location as a soft filter relaxed via the small
-     NEARBY_CITY_GROUPS lookup already built into make-db.py. Every
-     relaxation step is logged into the output, not just applied
-     silently.
+     Category vocabulary here ("musician" / "video-editor" /
+     "photographer") is deliberately kept in lockstep with what
+     make-db.py now writes into artist_documents.category (derived from
+     the artist_profiles filename prefix, M/V/P) -- these two lists have
+     to match exactly or the hard category filter below returns nothing.
+     This was the root cause of empty candidate pools before: make-db.py
+     was writing the docx's own free-text category ("Vocalist &
+     Guitarist", "Video Editor", ...) into the `category` column instead
+     of a value from this fixed vocabulary, so `WHERE category = ?`
+     never matched anything the extraction step could produce.
+
+  2. DETERMINISTIC SQL SEARCH (no LLM): query artists.db.
+     - category is the FIRST, hard filter -- always required, never
+       relaxed. A musician request should never surface a photographer.
+     - location and niche are the SECOND filter, applied together as a
+       soft constraint and relaxed in stages (see search_candidates):
+       exact city + niche -> exact city -> region + niche -> region ->
+       niche only -> category only. The category-only stage is a
+       guaranteed floor: as long as any artist of that category exists
+       in the DB, the search returns *something* rather than an empty
+       list, so scoring/recommendation isn't starved by an over-narrow
+       filter. Every relaxation step actually applied is logged into the
+       output, not just applied silently.
 
   3. PER-CANDIDATE, PER-DIMENSION SCORING (LLM, one call per candidate,
      candidates scored BLIND to each other -- never compared in the same
@@ -29,13 +46,15 @@ JSON per conversation. Pipeline, matching what we designed:
      per-dimension scores is computed here, and candidates are sorted by
      that number. This is what makes the ranking reproducible and
      defensible -- "why is A above B" always reduces to arithmetic on
-     visible per-dimension scores, never a free-floating LLM opinion.
+     visible per-dimension scores, never a free-floating LLM opinion. An
+     `overall_reasoning` string (code, not LLM) is also assembled per
+     candidate by stitching together the per-dimension reasoning, so the
+     "why this score" answer is visible at a glance without digging into
+     nested dimension_scores.
 
   5. OUTPUT: recommendations.json with top 2 (or fewer / a stated "no
-     plausible match" if the pool is empty even after relaxation),
-     each with per-dimension scores + reasoning + weighted total, plus
-     up to 2 refinement questions tied to specific assumed/unknown
-     fields that could change the ranking.
+     plausible match" if the pool is empty even after relaxation), each
+     with per-dimension scores + reasoning + weighted total.
 
 Re-ranking (the follow-up file) is intentionally a SEPARATE script
 (reranker.py) that reuses these same building blocks against a
@@ -66,7 +85,8 @@ HIRER_CONVERSATIONS_DIR = REPO_ROOT / "Data-set" / "hirer_conversations"
 DB_PATH = REPO_ROOT / "artists.db"
 OUTPUT_DIR = REPO_ROOT / "recommendations"
 
-VALID_CATEGORIES = {"musicians", "photographers", "video_editors"}
+# Must match FILENAME_PREFIX_TO_CATEGORY.values() in make-db.py exactly.
+VALID_CATEGORIES = {"musician", "video-editor", "photographer"}
 
 # Same small, stated location grouping used in make-db.py -- imported
 # by re-declaring here rather than importing across the two sibling
@@ -74,6 +94,12 @@ VALID_CATEGORIES = {"musicians", "photographers", "video_editors"}
 # lists in sync manually; see decision_note.md limitation note.
 NEARBY_CITY_GROUPS = {
     "delhi ncr": {"delhi", "new delhi", "gurgaon", "gurugram", "noida", "ghaziabad", "faridabad"},
+}
+
+# Words too generic to usefully narrow a niche LIKE match.
+NICHE_STOPWORDS = {
+    "and", "or", "the", "a", "an", "for", "with", "of", "in", "on", "to",
+    "artist", "creator",
 }
 
 
@@ -87,7 +113,8 @@ email thread -- read it for CONTENT regardless of format.
 Output ONLY a JSON object (no markdown fences, no preamble) with EXACTLY these keys:
 
 {{
-  "category": {{"value": one of ["musicians", "photographers", "video_editors", "unclear"], "source": "stated" or "inferred", "evidence": "short quote or paraphrase"}},
+  "category": {{"value": one of ["musician", "video-editor", "photographer", "unclear"], "source": "stated" or "inferred", "evidence": "short quote or paraphrase"}},
+  "niche": {{"value": string or null, "source": "stated"/"inferred"/"unknown"}},
   "location_city": {{"value": string or null, "source": "stated"/"inferred"/"unknown"}},
   "budget_max_inr": {{"value": number or null, "source": "stated"/"inferred"/"unknown"}},
   "deadline_or_date": {{"value": string or null, "source": "stated"/"inferred"/"unknown"}},
@@ -98,8 +125,13 @@ Output ONLY a JSON object (no markdown fences, no preamble) with EXACTLY these k
 
 Rules:
 - "category" must be exactly one of the four listed values. Infer from context if not stated outright
-  (e.g. "live music" -> musicians, "reel editor" -> video_editors, "photographer" -> photographers).
+  (e.g. "live music" -> musician, "reel editor" -> video-editor, "photographer" -> photographer).
   Use "unclear" only if genuinely ambiguous.
+- "niche" is a short, specific description of the kind of artist within that category the hirer wants
+  (e.g. "wedding photographer", "acoustic vocalist and guitarist", "short-form reel editor",
+  "event videographer"). This is matched against each artist's own stated specialty, so keep it
+  concrete and a few words long, not a full sentence. Use null if the conversation gives no signal
+  beyond the bare category.
 - Every value must be traceable to something actually in the conversation. Do not invent specifics
   (exact prices, dates, or requirements) that aren't stated or reasonably implied.
 - "source": "stated" means explicitly said; "inferred" means a reasonable read of context, not a direct
@@ -141,14 +173,46 @@ def city_region(city):
     return None
 
 
+def niche_keywords(niche_text):
+    """
+    Break a free-text niche request ("acoustic vocalist and guitarist")
+    into a small set of lowercase keywords to LIKE-match against the
+    DB's `niche` column (itself free text pulled straight from each
+    artist's docx-stated category, e.g. "Vocalist & Guitarist"). This is
+    deliberately loose -- it's a candidate-pool filter to cut down how
+    many profiles the judging LLM has to score, not a precise search.
+    """
+    if not niche_text:
+        return []
+    cleaned = niche_text.replace("&", " ").replace("/", " ").replace(",", " ")
+    words = [w.strip().lower() for w in cleaned.split()]
+    return [w for w in words if len(w) >= 3 and w not in NICHE_STOPWORDS]
+
+
+def _row_to_dict(row) -> dict:
+    artist_id, name, data_json = row
+    profile = json.loads(data_json)
+    return {"artist_id": artist_id, "name": name, "profile": profile}
+
+
 def search_candidates(conn, expanded_request: dict) -> tuple[list[dict], list[str]]:
     """
-    Returns (candidate_rows, relaxation_log). Category is a hard filter,
-    never relaxed -- a musician request should never surface a
-    photographer. Location is relaxed in stages: exact city -> region
-    match -> no location filter at all. Each relaxation actually applied
-    is recorded in relaxation_log so the output stays honest about how
-    the candidate pool was found, not just what it ended up being.
+    Returns (candidate_rows, relaxation_log).
+
+    Filter 1 (hard, always applied): category. A musician request never
+    surfaces a photographer or video editor -- this is never relaxed.
+
+    Filter 2 (soft, staged): location AND niche together, relaxed in
+    order of specificity until something is found:
+      city + niche  ->  city only  ->  region + niche  ->  region only
+      ->  niche only (no location)  ->  category only (guaranteed floor)
+
+    The last stage never fails as long as at least one artist of that
+    category exists in the DB, so a request that gives no usable
+    location/niche signal (or one that doesn't match anything specific)
+    still surfaces the right category of artist instead of an empty
+    list. Every stage that was tried and came up empty is recorded in
+    relaxation_log.
     """
     cursor = conn.cursor()
     relaxation_log = []
@@ -159,48 +223,69 @@ def search_candidates(conn, expanded_request: dict) -> tuple[list[dict], list[st
 
     hirer_city = normalize_city(expanded_request.get("location_city", {}).get("value"))
     hirer_region = city_region(hirer_city)
+    keywords = niche_keywords(expanded_request.get("niche", {}).get("value"))
 
-    # Stage 1: exact city match (if a city was even given)
+    def run(extra_where: str, extra_params: list):
+        query = "SELECT artist_id, name, data FROM artist_documents WHERE category = ?" + extra_where
+        cursor.execute(query, (category, *extra_params))
+        return cursor.fetchall()
+
+    def niche_clause():
+        if not keywords:
+            return "", []
+        clause = " AND (" + " OR ".join("niche LIKE ?" for _ in keywords) + ")"
+        params = [f"%{kw}%" for kw in keywords]
+        return clause, params
+
+    niche_where, niche_params = niche_clause()
+
+    # Stage 1/2: exact city match, with then without the niche filter.
     if hirer_city:
-        cursor.execute(
-            "SELECT artist_id, name, data FROM artist_documents WHERE category = ? AND location_city = ?",
-            (category, hirer_city),
-        )
-        rows = cursor.fetchall()
+        if keywords:
+            rows = run(" AND location_city = ?" + niche_where, [hirer_city] + niche_params)
+            if rows:
+                return [_row_to_dict(r) for r in rows], relaxation_log
+            relaxation_log.append(
+                f"no match for category+city '{hirer_city}'+niche {keywords} -- dropping niche filter"
+            )
+
+        rows = run(" AND location_city = ?", [hirer_city])
         if rows:
             return [_row_to_dict(r) for r in rows], relaxation_log
-
         relaxation_log.append(f"no exact city match for '{hirer_city}' -- relaxing to region")
 
-    # Stage 2: region match (e.g. Gurgaon hirer, Delhi-listed artist)
+    # Stage 3/4: region match, with then without the niche filter.
     if hirer_region:
-        cursor.execute(
-            "SELECT artist_id, name, data FROM artist_documents WHERE category = ? AND location_region = ?",
-            (category, hirer_region),
-        )
-        rows = cursor.fetchall()
+        if keywords:
+            rows = run(" AND location_region = ?" + niche_where, [hirer_region] + niche_params)
+            if rows:
+                return [_row_to_dict(r) for r in rows], relaxation_log
+            relaxation_log.append(
+                f"no match within region '{hirer_region}'+niche {keywords} -- dropping niche filter"
+            )
+
+        rows = run(" AND location_region = ?", [hirer_region])
         if rows:
             return [_row_to_dict(r) for r in rows], relaxation_log
-
         relaxation_log.append(f"no match within region '{hirer_region}' -- relaxing location entirely")
     elif hirer_city:
         relaxation_log.append(f"'{hirer_city}' is not in any known region grouping -- relaxing location entirely")
 
-    # Stage 3: category only, location unconstrained
-    cursor.execute("SELECT artist_id, name, data FROM artist_documents WHERE category = ?", (category,))
-    rows = cursor.fetchall()
+    # Stage 5: niche only, location unconstrained.
+    if keywords:
+        rows = run(niche_where, niche_params)
+        if rows:
+            relaxation_log.append("location filter fully relaxed -- results are category+niche matches")
+            return [_row_to_dict(r) for r in rows], relaxation_log
+        relaxation_log.append(f"no niche match for {keywords} either -- dropping niche filter")
+
+    # Stage 6: category only -- guaranteed floor, never relaxed further.
+    rows = run("", [])
     if rows:
-        relaxation_log.append("location filter fully relaxed -- results are category-only matches")
+        relaxation_log.append("all location/niche filters relaxed -- results are category-only matches")
     else:
         relaxation_log.append(f"no artists at all found for category '{category}'")
-
     return [_row_to_dict(r) for r in rows], relaxation_log
-
-
-def _row_to_dict(row) -> dict:
-    artist_id, name, data_json = row
-    profile = json.loads(data_json)
-    return {"artist_id": artist_id, "name": name, "profile": profile}
 
 
 # ---------------------------------------------------------
@@ -242,7 +327,8 @@ dimension:
 Scoring guide (apply consistently): 1 = no supporting evidence / clear mismatch, 3 = partial or
 unverified fit, 5 = strong, directly-evidenced fit. Base every score and reasoning ONLY on what's
 actually in the candidate profile below (their bio, evaluated multimodal Q&A, signal metrics, vibe
-summary) -- do not invent capabilities not evidenced there.
+summary) -- do not invent capabilities not evidenced there. The "reasoning" field is required for every
+dimension and must cite something specific from the profile, not a generic statement.
 
 Hiring Request (structured):
 {expanded_request_json}
@@ -281,39 +367,30 @@ def compute_weighted_total(dimension_scores: dict) -> float:
     return round(total, 3)
 
 
-# ---------------------------------------------------------
-# 4. REFINEMENT QUESTIONS: tied to specific assumed/unknown fields
-# ---------------------------------------------------------
-def build_refinement_questions(expanded_request: dict) -> list[dict]:
+def build_overall_reasoning(dimension_scores: dict) -> str:
     """
-    At most 2 questions, each tied to a field that is genuinely
-    unresolved (source == "unknown", or "inferred" rather than
-    "stated"), with a short note on why it could change the ranking.
-    This is deliberately NOT an LLM call -- it's a direct read of the
-    "source" tags already produced during extraction, which is exactly
-    what those tags are for.
+    Stitches the per-dimension LLM reasoning strings into one summary
+    line, in fixed rubric order, each labelled with its score and
+    weight, so "why did this candidate get this total" is answerable by
+    reading one field instead of three. Pure string formatting -- not an
+    LLM call -- so it can never drift from the dimension_scores it's
+    summarizing.
     """
-    candidates = []
-    for field_name in ["location_city", "budget_max_inr", "deadline_or_date"]:
-        field = expanded_request.get(field_name, {})
-        if field.get("source") in ("unknown", "inferred"):
-            candidates.append({
-                "field": field_name,
-                "question": f"Can you confirm {field_name.replace('_', ' ')}?",
-                "why_it_matters": f"This was '{field.get('source')}', not explicitly stated -- "
-                                  f"confirming it could change which candidates are eligible or how they rank.",
-            })
-    for unknown in expanded_request.get("unknowns", []):
-        candidates.append({
-            "field": "unknowns",
-            "question": f"Can you clarify: {unknown}?",
-            "why_it_matters": "Listed as an open unknown during request extraction.",
-        })
-    return candidates[:2]
+    if "error" in dimension_scores:
+        return f"Scoring failed: {dimension_scores['error']}"
+
+    parts = []
+    for dim in SCORING_DIMENSIONS:
+        entry = dimension_scores.get(dim, {})
+        score = entry.get("score", "?")
+        weight = SCORING_WEIGHTS.get(dim, 0)
+        reasoning = entry.get("reasoning", "no reasoning returned")
+        parts.append(f"{dim} ({score}/5, weight {weight}): {reasoning}")
+    return " | ".join(parts)
 
 
 # ---------------------------------------------------------
-# 5. MAIN PER-HIRER PIPELINE
+# 4. MAIN PER-HIRER PIPELINE
 # ---------------------------------------------------------
 def process_hirer_conversation(conversation_path: Path, conn) -> dict:
     conversation_text = conversation_path.read_text(encoding="utf-8")
@@ -344,6 +421,7 @@ def process_hirer_conversation(conversation_path: Path, conn) -> dict:
             "artist_id": candidate["artist_id"],
             "name": candidate["name"],
             "dimension_scores": dimension_scores,
+            "overall_reasoning": build_overall_reasoning(dimension_scores),
             "weighted_total_score": weighted_total,
         })
 
@@ -360,13 +438,12 @@ def process_hirer_conversation(conversation_path: Path, conn) -> dict:
         "candidate_pool_size": len(candidates),
         "scoring_weights_used": SCORING_WEIGHTS,
         "recommendations": top_candidates,
-        "refinement_questions": build_refinement_questions(expanded_request),
     }
 
     if not candidates:
         result["no_match_reason"] = (
             "No plausible candidates found for this category even after full location "
-            "relaxation. See search_relaxation_log for what was tried."
+            "and niche relaxation. See search_relaxation_log for what was tried."
         )
 
     return result
